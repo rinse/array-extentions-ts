@@ -1,4 +1,4 @@
-export type Mapper<T, R> = (value: T, index: number, array: T[]) => R;
+export type _Mapper<T, R> = (value: T, index: number, array: T[]) => R;
 
 export function head<T>(values: T[]): [T, T[]] | null {
     const ret = [...values];
@@ -24,14 +24,14 @@ export function ifEmpty<T>(values: T[], defaultValue: () => T[]): T[] {
     return isNotEmpty(values) ? values : defaultValue();
 }
 
-export function filterMap<T, U>(values: T[], mapper: Mapper<T, U | null>): U[] {
+export function filterMap<T, U>(values: T[], mapper: _Mapper<T, U | null>): U[] {
     return values.flatMap((value, index, array) => {
         const mapped = mapper(value, index, array);
         return mapped !== null ? [mapped] : [];
     });
 }
 
-export async function filterMapP<T, U>(values: T[], mapper: Mapper<T, Promise<U | null>>): Promise<U[]> {
+export async function filterMapP<T, U>(values: T[], mapper: _Mapper<T, Promise<U | null>>): Promise<U[]> {
     return filterNotNull(await mapP(values, mapper));
 }
 
@@ -61,11 +61,11 @@ export function groupBy<T, K>(values: T[], keySelector: (value: T) => K): Map<K,
     return ret;
 }
 
-export async function mapP<T, U>(values: T[], mapper: Mapper<T, Promise<U>>): Promise<U[]> {
+export async function mapP<T, U>(values: T[], mapper: _Mapper<T, Promise<U>>): Promise<U[]> {
     return Promise.all(values.map(mapper));
 }
 
-export async function mapP_<T>(values: T[], mapper: Mapper<T, Promise<void>>): Promise<void> {
+export async function mapP_<T>(values: T[], mapper: _Mapper<T, Promise<void>>): Promise<void> {
     await Promise.all(values.map(mapper));
 }
 
