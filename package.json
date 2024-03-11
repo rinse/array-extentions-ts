@@ -18,8 +18,11 @@
   },
   "private": false,
   "main": "out/index.js",
-  "exports": [
-  ],
+  "exports": {
+    ".": "./out/index.js",
+    "./extensions": "./out/extensions.js",
+    "./pure": "./out/pure.js"
+  },
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",

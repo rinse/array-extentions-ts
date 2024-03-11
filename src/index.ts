@@ -1,1 +1,2 @@
-export * as Extensions from "./extensions";
+export * from "./extensions";
+export * from "./pure";
