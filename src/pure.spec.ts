@@ -266,6 +266,11 @@ describe("zip", () => {
         const actual = zip(input1, input2);
         expect(actual).toEqual([[1, 'a'], [2, 'b'], [3, 'c'], [4, 'd'], [5, 'e'], [6, 'f'], [7, 'g'], [8, 'h'], [9, 'i'], [10, 'j']]);
     });
+    test("can handle infinite iterable", () => {
+        const input1 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+        const actual = zip(input1, iterate(0, n => n + 1));
+        expect(actual).toEqual([['a', 0], ['b', 1], ['c', 2], ['d', 3], ['e', 4], ['f', 5], ['g', 6], ['h', 7], ['i', 8], ['j', 9]]);
+    });
 });
 
 describe("zipWith", () => {
@@ -313,4 +318,12 @@ function repeat<T>(value: T, count: number): T[] {
         ret.push(value);
     }
     return ret;
+}
+
+function* iterate<T>(initialValue: T, f: (value: T) => T) {
+    let value = initialValue;
+    while (true) {
+        yield value;
+        value = f(value);
+    }
 }

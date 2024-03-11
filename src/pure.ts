@@ -96,22 +96,32 @@ export async function reduceP<T, U>(
     return acc;
 }
 
-export function zip<A, B>(a: A[], b: B[]): [A, B][] {
+export function zip<A, B>(a: A[], b: Iterable<B>): [A, B][] {
     return zipWith(a, b, (a, b) => [a, b]);
 }
 
-export function zipWith<A, B, C>(a: A[], b: B[], zipper: (a: A, b: B, index: number) => C): C[] {
-    let ret = [];
-    for (let i = 0; i < a.length && i < b.length; ++i) {
-        ret.push(zipper(a[i], b[i], i));
-    }
-    return ret;
+export function zipWith<A, B, C>(a: A[], b: Iterable<B>, zipper: (a: A, b: B, index: number) => C): C[] {
+    const gen = zipWithG(a, b, zipper);
+    return [...gen];
 }
 
-export async function zipWithP<A, B, C>(a: A[], b: B[], zipper: (a: A, b: B, index: number) => Promise<C>): Promise<C[]> {
+function* zipWithG<A, B, C>(a: Iterable<A>, b: Iterable<B>, zipper: (a: A, b: B, index: number) => C) {
+    const aIter = a[Symbol.iterator]();
+    const bIter = b[Symbol.iterator]();
+    for (let i = 0; true; ++i) {
+        const aResult = aIter.next();
+        const bResult = bIter.next();
+        if (aResult.done || bResult.done) {
+            return;
+        }
+        yield zipper(aResult.value, bResult.value, i);
+    }
+}
+
+export async function zipWithP<A, B, C>(a: A[], b: Iterable<B>, zipper: (a: A, b: B, index: number) => Promise<C>): Promise<C[]> {
     return Promise.all(zipWith(a, b, zipper));
 }
 
-export async function zipWithP_<A, B>(a: A[], b: B[], zipper: (a: A, b: B, index: number) => Promise<void>): Promise<void> {
+export async function zipWithP_<A, B>(a: A[], b: Iterable<B>, zipper: (a: A, b: B, index: number) => Promise<void>): Promise<void> {
     await Promise.all(zipWith(a, b, zipper));
 }

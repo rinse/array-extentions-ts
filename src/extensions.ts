@@ -23,10 +23,10 @@ declare global {
         mapP<U>(mapper: _Mapper<T, Promise<U>>): Promise<U[]>
         mapP_(mapper: _Mapper<T, Promise<void>>): Promise<void>
         reduceP<U>(reducer: (acc: U, value: T, index: number, array: T[]) => Promise<U>, initialValue: U): Promise<U>
-        zip<U>(values: U[]): [T, U][]
-        zipWith<U, V>(b: U[], zipper: (a: T, b: U, index: number) => V): V[]
-        zipWithP<U, V>(b: U[], zipper: (a: T, b: U, index: number) => Promise<V>): Promise<V[]>
-        zipWithP_<U>(b: U[], zipper: (a: T, b: U, index: number) => Promise<void>): Promise<void>
+        zip<U>(values: Iterable<U>): [T, U][]
+        zipWith<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => V): V[]
+        zipWithP<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => Promise<V>): Promise<V[]>
+        zipWithP_<U>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => Promise<void>): Promise<void>
     }
 }
 
