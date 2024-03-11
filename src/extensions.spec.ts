@@ -37,6 +37,15 @@ describe("ifEmpty", () => {
     });
 });
 
+describe("filterP", () => {
+    test("normal case", async () => {
+        const actual = await [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filterP(async e => {
+            return e % 2 === 0;
+        });
+        expect(actual).toEqual([2, 4, 6, 8, 10]);
+    });
+});
+
 describe("filterMap", () => {
     test("normal case", () => {
         const actual = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filterMap(e => {
@@ -73,6 +82,16 @@ describe("filterNotNullNorUndefined", () => {
     test("returns an array of a not null nor undefined type", () => {
         const actual: Array<number> = [1, 2, 3, 4, 5, null, 6, 7, 8, undefined, 9, 10].filterNotNullNorUndefined();
         expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    });
+});
+
+describe("forEachP is the same to mapP_", () => {
+    test("normal case", async () => {
+        const fn = jest.fn();
+        await [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEachP(async e => {
+            fn();
+        });
+        expect(fn).toHaveBeenCalledTimes(10);
     });
 });
 

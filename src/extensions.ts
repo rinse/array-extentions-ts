@@ -1,6 +1,6 @@
 import {
     _Mapper, filterMap, filterMapP, filterNotNull,
-    filterNotNullNorUndefined, filterNotUndefined, groupBy, head,
+    filterNotNullNorUndefined, filterNotUndefined, filterP, forEachP, groupBy, head,
     ifEmpty, isEmpty, isNotEmpty, last, mapP, mapP_,
     reduceP, zip, zipWith, zipWithP, zipWithP_,
 } from "./pure";
@@ -12,11 +12,13 @@ declare global {
         isEmpty(): boolean
         ifEmpty(defaultValue: () => T[]): T[]
         isNotEmpty(): boolean
+        filterP(mapper: _Mapper<T, Promise<boolean>>): Promise<Array<T>>
         filterMap<U>(mapper: _Mapper<T, U | null>): Array<U>
         filterMapP<U>(mapper: _Mapper<T, Promise<U | null>>): Promise<U[]>
         filterNotNull(): Array<NotNull<T>>
         filterNotUndefined(): Array<NotUndefined<T>>
         filterNotNullNorUndefined(): Array<NonNullable<T>>
+        forEachP(mapper: _Mapper<T, Promise<void>>): Promise<void>
         groupBy<K>(keySelector: (value: T) => K): Map<K, T[]>
         mapP<U>(mapper: _Mapper<T, Promise<U>>): Promise<U[]>
         mapP_(mapper: _Mapper<T, Promise<void>>): Promise<void>
@@ -43,11 +45,13 @@ Array.prototype.last = member(last);
 Array.prototype.isEmpty = member(isEmpty);
 Array.prototype.ifEmpty = member(ifEmpty);
 Array.prototype.isNotEmpty = member(isNotEmpty);
+Array.prototype.filterP = member(filterP);
 Array.prototype.filterMap = member(filterMap);
 Array.prototype.filterMapP = member(filterMapP);
 Array.prototype.filterNotNull = member(filterNotNull);
 Array.prototype.filterNotUndefined = member(filterNotUndefined);
 Array.prototype.filterNotNullNorUndefined = member(filterNotNullNorUndefined);
+Array.prototype.forEachP = member(forEachP);
 Array.prototype.groupBy = member(groupBy);
 Array.prototype.mapP = member(mapP);
 Array.prototype.mapP_ = member(mapP_);

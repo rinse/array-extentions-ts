@@ -1,4 +1,4 @@
-import { filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, groupBy, head, ifEmpty, isEmpty, isNotEmpty, last, mapP, mapP_, reduceP, zip, zipWith, zipWithP } from "./pure";
+import { filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, filterP, forEachP, groupBy, head, ifEmpty, isEmpty, isNotEmpty, last, mapP, mapP_, reduceP, zip, zipWith, zipWithP } from "./pure";
 
 describe("head", () => {
     test("takes the first element and the rest of elements", () => {
@@ -59,6 +59,27 @@ describe("ifEmpty", () => {
         const mock = jest.fn(() => [4, 5, 6]);
         ifEmpty([1, 2, 3], () => mock());
         expect(mock).toHaveBeenCalledTimes(0);
+    });
+});
+
+describe("filterP", () => {
+    test("normal case", async () => {
+        const actual = await filterP([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], async e => {
+            return e % 2 === 0;
+        });
+        expect(actual).toEqual([2, 4, 6, 8, 10]);
+    });
+    test("process elements asynchronously", async () => {
+        const start = performance.now();
+        await filterP([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], async e => {
+            await sleep(100);
+            return e % 2 === 0;
+        });
+        const end = performance.now();
+        const actual = end - start;
+        // Expects 90 <= actual <= 110
+        expect(actual).toBeGreaterThanOrEqual(90);
+        expect(actual).toBeLessThanOrEqual(110);
     });
 });
 
@@ -134,6 +155,16 @@ describe("filterNotNullNorUndefined", () => {
     test("returns an array of a not null nor undefined type", () => {
         const actual: Array<number> = filterNotNullNorUndefined([1, 2, 3, 4, 5, null, 6, 7, 8, undefined, 9, 10]);
         expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    });
+});
+
+describe("forEachP is the same to mapP_", () => {
+    test("normal case", async () => {
+        const fn = jest.fn();
+        await forEachP([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], async e => {
+            fn();
+        });
+        expect(fn).toHaveBeenCalledTimes(10);
     });
 });
 

@@ -24,6 +24,16 @@ export function ifEmpty<T>(values: T[], defaultValue: () => T[]): T[] {
     return isNotEmpty(values) ? values : defaultValue();
 }
 
+export async function filterP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<T[]> {
+    const ret: T[] = [];
+    await mapP_(values, async (value, index, array) => {
+        if (await pred(value, index, array)) {
+            ret.push(value);
+        }
+    });
+    return ret;
+}
+
 export function filterMap<T, U>(values: T[], mapper: _Mapper<T, U | null>): U[] {
     return values.flatMap((value, index, array) => {
         const mapped = mapper(value, index, array);
@@ -47,6 +57,10 @@ export function filterNotNullNorUndefined<T>(values: (T | undefined | null)[]): 
     return filterNotUndefined(filterNotNull(values));
 }
 
+export async function forEachP<T>(values: T[], f: _Mapper<T, Promise<void>>): Promise<void> {
+    return mapP_(values, f);
+}
+
 export function groupBy<T, K>(values: T[], keySelector: (value: T) => K): Map<K, T[]> {
     const ret = new Map<K, T[]>();
     for (const value of values) {
@@ -66,7 +80,7 @@ export async function mapP<T, U>(values: T[], mapper: _Mapper<T, Promise<U>>): P
 }
 
 export async function mapP_<T>(values: T[], mapper: _Mapper<T, Promise<void>>): Promise<void> {
-    await Promise.all(values.map(mapper));
+    await mapP(values, mapper);
 }
 
 export async function reduceP<T, U>(
