@@ -8,7 +8,7 @@ describe("Array#head", () => {
     });
 });
 
-describe("last", () => {
+describe("Array#last", () => {
     test("takes the last element and the rest of elements", () => {
         const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const actual = input.last();
@@ -16,28 +16,28 @@ describe("last", () => {
     });
 });
 
-describe("isEmpty", () => {
+describe("Array#isEmpty", () => {
     test("returns true if the array is empty", () => {
         const actual = [].isEmpty();
         expect(actual).toBe(true);
     });
 });
 
-describe("isNotEmpty", () => {
+describe("Array#isNotEmpty", () => {
     test("returns true if the array is not empty", () => {
         const actual = [1, 2, 3].isNotEmpty();
         expect(actual).toBe(true);
     });
 });
 
-describe("ifEmpty", () => {
+describe("Array#ifEmpty", () => {
     test("returns the given input as it is if it is not empty", () => {
         const actual = [1, 2, 3].ifEmpty(() => [4, 5, 6]);
         expect(actual).toEqual([1, 2, 3]);
     });
 });
 
-describe("filterP", () => {
+describe("Array#filterP", () => {
     test("normal case", async () => {
         const actual = await [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filterP(async e => {
             return e % 2 === 0;
@@ -46,7 +46,7 @@ describe("filterP", () => {
     });
 });
 
-describe("filterMap", () => {
+describe("Array#filterMap", () => {
     test("normal case", () => {
         const actual = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filterMap(e => {
             return e % 2 === 0 ? e * 2 : null
@@ -55,7 +55,7 @@ describe("filterMap", () => {
     });
 });
 
-describe("filterMapP", () => {
+describe("Array#filterMapP", () => {
     test("normal case", async () => {
         const actual = await [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filterMapP(async e => {
             return e % 2 === 0 ? e * 2 : null;
@@ -64,28 +64,28 @@ describe("filterMapP", () => {
     });
 });
 
-describe("filterNotNull", () => {
+describe("Array#filterNotNull", () => {
     test("returns an array of a nonnull type", () => {
         const actual: Array<number | undefined> = [1, 2, 3, 4, 5, null, 6, 7, 8, undefined, 9, 10].filterNotNull();
         expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7, 8, undefined, 9, 10]);
     });
 });
 
-describe("filterNotUndefined", () => {
+describe("Array#filterNotUndefined", () => {
     test("returns an array of a non-undefined type", () => {
         const actual: Array<number | null> = [1, 2, 3, 4, 5, null, 6, 7, 8, undefined, 9, 10].filterNotUndefined();
         expect(actual).toEqual([1, 2, 3, 4, 5, null, 6, 7, 8, 9, 10]);
     });
 });
 
-describe("filterNotNullNorUndefined", () => {
+describe("Array#filterNotNullNorUndefined", () => {
     test("returns an array of a not null nor undefined type", () => {
         const actual: Array<number> = [1, 2, 3, 4, 5, null, 6, 7, 8, undefined, 9, 10].filterNotNullNorUndefined();
         expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     });
 });
 
-describe("forEachP is the same to mapP_", () => {
+describe("Array#forEachP is the same to mapP_", () => {
     test("normal case", async () => {
         const fn = jest.fn();
         await [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEachP(async e => {
@@ -95,7 +95,7 @@ describe("forEachP is the same to mapP_", () => {
     });
 });
 
-describe("groupBy", () => {
+describe("Array#groupBy", () => {
     test("groups by a given key", () => {
         const actual = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].groupBy(value => {
             return value % 2 === 0 ? "even" : "odd";
@@ -108,7 +108,7 @@ describe("groupBy", () => {
     });
 });
 
-describe("mapP", () => {
+describe("Array#mapP", () => {
     test("normal case", async () => {
         const actual = await [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].mapP(async e => {
             await sleep(0);
@@ -118,7 +118,7 @@ describe("mapP", () => {
     });
 });
 
-describe("mapP_", () => {
+describe("Array#mapP_", () => {
     test("normal case", async () => {
         const fn = jest.fn();
         await [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].mapP_(async e => {
@@ -128,7 +128,7 @@ describe("mapP_", () => {
     });
 });
 
-describe("reduceP", () => {
+describe("Array#reduceP", () => {
     test("behaves the save to reduce except handling of promise", async () => {
         const input = [[0, 1], [2, 3], [4, 5]];
         const init = [6, 7];
@@ -138,7 +138,7 @@ describe("reduceP", () => {
     });
 });
 
-describe("zip", () => {
+describe("Array#zip", () => {
     test("zips two arrays in a pair", () => {
         const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const input2 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
@@ -147,7 +147,7 @@ describe("zip", () => {
     });
 });
 
-describe("zipWith", () => {
+describe("Array#zipWith", () => {
     test("zips two arrays with a given function", () => {
         const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const input2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -156,7 +156,7 @@ describe("zipWith", () => {
     });
 });
 
-describe("zipWithP", () => {
+describe("Array#zipWithP", () => {
     test("behaves the same expect handing of promise", async () => {
         const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const input2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
