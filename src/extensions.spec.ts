@@ -173,11 +173,3 @@ function sleep(milliseconds: number): Promise<void> {
         }, milliseconds);
     });
 }
-
-function repeat<T>(value: T, count: number): T[] {
-    const ret = [];
-    for (let i = 0; i < count; ++i) {
-        ret.push(value);
-    }
-    return ret;
-}
