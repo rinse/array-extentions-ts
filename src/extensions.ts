@@ -7,14 +7,14 @@ import {
 
 declare global {
     interface Array<T> {
-        head(): [T, T[]] | null
-        last(): [T[], T] | null
+        head(): [T, T[]] | undefined
+        last(): [T[], T] | undefined
         isEmpty(): boolean
         ifEmpty(defaultValue: () => T[]): T[]
         isNotEmpty(): boolean
         filterP(mapper: _Mapper<T, Promise<boolean>>): Promise<Array<T>>
-        filterMap<U>(mapper: _Mapper<T, U | null>): Array<U>
-        filterMapP<U>(mapper: _Mapper<T, Promise<U | null>>): Promise<U[]>
+        filterMap<U>(mapper: _Mapper<T, U | undefined>): Array<U>
+        filterMapP<U>(mapper: _Mapper<T, Promise<U | undefined>>): Promise<U[]>
         filterNotNull(): Array<NotNull<T>>
         filterNotUndefined(): Array<NotUndefined<T>>
         filterNotNullNorUndefined(): Array<NonNullable<T>>

@@ -6,9 +6,9 @@ describe("head", () => {
         const actual = head(input);
         expect(actual).toEqual([1, [2, 3, 4, 5, 6, 7, 8, 9, 10]]);
     });
-    test("returns null for an empty array", () => {
+    test("returns undefined for an empty array", () => {
         const actual = head([]);
-        expect(actual).toEqual(null);
+        expect(actual).toEqual(undefined);
     });
 });
 
@@ -18,9 +18,9 @@ describe("last", () => {
         const actual = last(input);
         expect(actual).toEqual([[1, 2, 3, 4, 5, 6, 7, 8, 9], 10]);
     });
-    test("returns null for an empty array", () => {
+    test("returns undefined for an empty array", () => {
         const actual = last([]);
-        expect(actual).toEqual(null);
+        expect(actual).toEqual(undefined);
     });
 });
 
@@ -86,7 +86,9 @@ describe("filterP", () => {
 describe("filterMap", () => {
     test("normal case", () => {
         const actual = filterMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], e => {
-            return e % 2 === 0 ? e * 2 : null
+            if (e % 2 === 0) {
+                return e * 2;
+            }
         });
         expect(actual).toEqual([4, 8, 12, 16, 20]);
     });
@@ -109,7 +111,9 @@ describe("filterMap", () => {
 describe("filterMapP", () => {
     test("normal case", async () => {
         const actual = await filterMapP([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], async e => {
-            return e % 2 === 0 ? e * 2 : null;
+            if (e % 2 === 0) {
+                return e * 2;
+            }
         });
         expect(actual).toEqual([4, 8, 12, 16, 20]);
     });

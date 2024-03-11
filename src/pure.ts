@@ -1,15 +1,15 @@
 export type _Mapper<T, R> = (value: T, index: number, array: T[]) => R;
 
-export function head<T>(values: T[]): [T, T[]] | null {
+export function head<T>(values: T[]): [T, T[]] | undefined {
     const ret = [...values];
     const head = ret.shift();
-    return head !== undefined ? [head, ret] : null;
+    return head !== undefined ? [head, ret] : undefined;
 }
 
-export function last<T>(values: T[]): [T[], T] | null {
+export function last<T>(values: T[]): [T[], T] | undefined {
     const ret = [...values];
     const last = ret.pop();
-    return last !== undefined ? [ret, last] : null;
+    return last !== undefined ? [ret, last] : undefined;
 }
 
 export function isEmpty<T>(values: T[]): boolean {
@@ -34,15 +34,15 @@ export async function filterP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>
     return ret;
 }
 
-export function filterMap<T, U>(values: T[], mapper: _Mapper<T, U | null>): U[] {
+export function filterMap<T, U>(values: T[], mapper: _Mapper<T, U | undefined>): U[] {
     return values.flatMap((value, index, array) => {
         const mapped = mapper(value, index, array);
-        return mapped !== null ? [mapped] : [];
+        return mapped !== undefined ? [mapped] : [];
     });
 }
 
-export async function filterMapP<T, U>(values: T[], mapper: _Mapper<T, Promise<U | null>>): Promise<U[]> {
-    return filterNotNull(await mapP(values, mapper));
+export async function filterMapP<T, U>(values: T[], mapper: _Mapper<T, Promise<U | undefined>>): Promise<U[]> {
+    return filterNotUndefined(await mapP(values, mapper));
 }
 
 export function filterNotNull<T>(values: (T | null)[]) : T[] {

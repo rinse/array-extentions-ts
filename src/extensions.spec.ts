@@ -49,7 +49,9 @@ describe("Array#filterP", () => {
 describe("Array#filterMap", () => {
     test("normal case", () => {
         const actual = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filterMap(e => {
-            return e % 2 === 0 ? e * 2 : null
+            if (e % 2 === 0) {
+                return e * 2;
+            }
         });
         expect(actual).toEqual([4, 8, 12, 16, 20]);
     });
@@ -58,7 +60,9 @@ describe("Array#filterMap", () => {
 describe("Array#filterMapP", () => {
     test("normal case", async () => {
         const actual = await [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filterMapP(async e => {
-            return e % 2 === 0 ? e * 2 : null;
+            if (e % 2 === 0) {
+                return e * 2;
+            }
         });
         expect(actual).toEqual([4, 8, 12, 16, 20]);
     });
