@@ -1,0 +1,36 @@
+{
+  "author": "rinse <rinse418@gmail.com>",
+  "name": "@rinse418/array-extensions-ts",
+  "description": "Handy extensions for TS to the prototype of Array",
+  "keywords": [
+    "language",
+    "TypeScript",
+    "utility"
+  ],
+  "version": "0.1.0",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rinse/array-extensions-ts.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "private": false,
+  "main": "out/index.js",
+  "exports": [
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "lint": "npx eslint src",
+    "test": "npm run build && jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.25",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.2"
+  }
+}
