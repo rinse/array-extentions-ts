@@ -24,6 +24,30 @@ export function ifEmpty<T>(values: T[], defaultValue: () => T[]): T[] {
     return isNotEmpty(values) ? values : defaultValue();
 }
 
+export function intersperse<T>(values: T[], element: T): T[] {
+    const gen = intersperseGeneric(values, element);
+    return [...gen];
+}
+
+function* intersperseGeneric<T>(iterable: Iterable<T>, element: T) {
+    const iterator = iterable[Symbol.iterator]();
+    const result = iterator.next();
+    if (result.done) {
+        return;
+    }
+    yield result.value;
+    for (const value of eniterable(iterator)) {
+        yield element;
+        yield value;
+    }
+}
+
+function eniterable<T>(iterator: Iterator<T>) {
+    return {
+        [Symbol.iterator]: () => iterator,
+    };
+}
+
 export async function filterP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<T[]> {
     const ret: T[] = [];
     await mapP_(values, async (value, index, array) => {

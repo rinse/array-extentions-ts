@@ -1,7 +1,7 @@
 import {
     _Mapper, filterMap, filterMapP, filterNotNull,
     filterNotNullNorUndefined, filterNotUndefined, filterP, forEachP, groupBy, head,
-    ifEmpty, isEmpty, isNotEmpty, last, mapP, mapP_,
+    ifEmpty, intersperse, isEmpty, isNotEmpty, last, mapP, mapP_,
     reduceP, zip, zipWith, zipWithP, zipWithP_,
 } from "./pure";
 
@@ -12,6 +12,7 @@ declare global {
         isEmpty(): boolean
         ifEmpty(defaultValue: () => T[]): T[]
         isNotEmpty(): boolean
+        intersperse(element: T): T[]
         filterP(mapper: _Mapper<T, Promise<boolean>>): Promise<Array<T>>
         filterMap<U>(mapper: _Mapper<T, U | undefined>): Array<U>
         filterMapP<U>(mapper: _Mapper<T, Promise<U | undefined>>): Promise<U[]>
@@ -45,6 +46,7 @@ Array.prototype.last = member(last);
 Array.prototype.isEmpty = member(isEmpty);
 Array.prototype.ifEmpty = member(ifEmpty);
 Array.prototype.isNotEmpty = member(isNotEmpty);
+Array.prototype.intersperse = member(intersperse);
 Array.prototype.filterP = member(filterP);
 Array.prototype.filterMap = member(filterMap);
 Array.prototype.filterMapP = member(filterMapP);

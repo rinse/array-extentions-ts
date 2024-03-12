@@ -1,4 +1,9 @@
-import { filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, filterP, forEachP, groupBy, head, ifEmpty, isEmpty, isNotEmpty, last, mapP, mapP_, reduceP, zip, zipWith, zipWithP } from "./pure";
+import {
+    filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined,
+    filterNotUndefined, filterP, forEachP, groupBy, head, ifEmpty,
+    intersperse, isEmpty, isNotEmpty, last, mapP, mapP_, reduceP,
+    zip, zipWith, zipWithP,
+} from "./pure";
 
 describe("head", () => {
     test("takes the first element and the rest of elements", () => {
@@ -59,6 +64,21 @@ describe("ifEmpty", () => {
         const mock = jest.fn(() => [4, 5, 6]);
         ifEmpty([1, 2, 3], () => mock());
         expect(mock).toHaveBeenCalledTimes(0);
+    });
+});
+
+describe("intersperse", () => {
+    test("inserts an element between each element of an array", () => {
+        const actual = intersperse([1, 2, 3, 4, 5], 0);
+        expect(actual).toEqual([1, 0, 2, 0, 3, 0, 4, 0, 5]);
+    });
+    test("do nothing if the input array has no elements", () => {
+        const actual = intersperse([], 0);
+        expect(actual).toEqual([]);
+    });
+    test("do nothing if the input array has only one element", () => {
+        const actual = intersperse([1], 0);
+        expect(actual).toEqual([1]);
     });
 });
 
