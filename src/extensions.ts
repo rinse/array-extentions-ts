@@ -2,7 +2,7 @@ import {
     _Mapper, filterMap, filterMapP, filterNotNull,
     filterNotNullNorUndefined, filterNotUndefined, filterP, forEachP, groupBy, head,
     ifEmpty, intersperse, isEmpty, isNotEmpty, last, mapP, mapP_,
-    reduceP, zip, zipWith, zipWithP, zipWithP_,
+    permutations, reduceP, zip, zipWith, zipWithP, zipWithP_,
 } from "./pure";
 
 declare global {
@@ -23,6 +23,7 @@ declare global {
         groupBy<K>(keySelector: (value: T) => K): Map<K, T[]>
         mapP<U>(mapper: _Mapper<T, Promise<U>>): Promise<U[]>
         mapP_(mapper: _Mapper<T, Promise<void>>): Promise<void>
+        permutations(): T[][]
         reduceP<U>(reducer: (acc: U, value: T, index: number, array: T[]) => Promise<U>, initialValue: U): Promise<U>
         zip<U>(values: Iterable<U>): [T, U][]
         zipWith<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => V): V[]
@@ -57,6 +58,7 @@ Array.prototype.forEachP = member(forEachP);
 Array.prototype.groupBy = member(groupBy);
 Array.prototype.mapP = member(mapP);
 Array.prototype.mapP_ = member(mapP_);
+Array.prototype.permutations = member(permutations);
 Array.prototype.reduceP = member(reduceP);
 Array.prototype.zip = member(zip);
 Array.prototype.zipWith = member(zipWith);

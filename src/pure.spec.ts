@@ -1,7 +1,7 @@
 import {
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined,
     filterNotUndefined, filterP, forEachP, groupBy, head, ifEmpty,
-    intersperse, isEmpty, isNotEmpty, last, mapP, mapP_, reduceP,
+    intersperse, isEmpty, isNotEmpty, last, mapP, mapP_, permutations, reduceP,
     zip, zipWith, zipWithP,
 } from "./pure";
 
@@ -252,6 +252,15 @@ describe("mapP_", () => {
         expect(actual).toEqual(
             repeat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10)
         );
+    });
+});
+
+describe("permutations", () => {
+    test("enumerates permutations", () => {
+        const actual = permutations([1, 2, 3])
+        expect(actual).toEqual([
+            [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]
+        ]);
     });
 });
 

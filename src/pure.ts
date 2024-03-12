@@ -107,6 +107,24 @@ export async function mapP_<T>(values: T[], mapper: _Mapper<T, Promise<void>>): 
     await mapP(values, mapper);
 }
 
+export function permutations<T>(values: T[]): T[][] {
+    return [...permutationsGenerator(values)];
+}
+
+function* permutationsGenerator<T>(values: T[]): Generator<T[]> {
+    if (isEmpty(values)) {
+        yield [];
+    }
+    for (let i = 0; i < values.length; ++i) {
+        const head = values[i];
+        const rest = [...values];
+        rest.splice(i, 1);
+        for (const body of permutationsGenerator(rest)) {
+            yield [head, ...body];
+        }
+    }
+}
+
 export async function reduceP<T, U>(
     values: T[],
     reducer: (acc: U, value: T, index: number, array: T[]) => Promise<U>,
