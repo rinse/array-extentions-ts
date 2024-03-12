@@ -138,6 +138,36 @@ export async function reduceP<T, U>(
     return acc;
 }
 
+export function take<T>(values: T[], n: number): T[] {
+    return [...takeG(values, n)]
+}
+
+function* takeG<T>(iterable: Iterable<T>, n: number): Generator<T> {
+    let i = 0;
+    for (const value of iterable) {
+        if (n <= i) {
+            break;
+        }
+        yield value;
+        ++i;
+    }
+}
+
+export function drop<T>(values: T[], n: number): T[] {
+    return [...dropG(values, n)]
+}
+
+function* dropG<T>(iterable: Iterable<T>, n: number): Generator<T> {
+    let i = n;
+    for (const value of iterable) {
+        if (0 < i) {
+            --i;
+            continue;
+        }
+        yield value;
+    }
+}
+
 export function zip<A, B>(a: A[], b: Iterable<B>): [A, B][] {
     return zipWith(a, b, (a, b) => [a, b]);
 }

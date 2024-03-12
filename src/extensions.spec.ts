@@ -149,6 +149,22 @@ describe("Array#reduceP", () => {
     });
 });
 
+describe("Array#take", () => {
+    test("takes the first n items from an array", async () => {
+        const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual = input.take(3);
+        expect(actual).toEqual([1, 2, 3]);
+    });
+});
+
+describe("Array#drop", () => {
+    test("drops the first n items from an array", () => {
+        const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual = input.drop(3);
+        expect(actual).toEqual([4, 5, 6, 7, 8, 9, 10]);
+    });
+});
+
 describe("Array#zip", () => {
     test("zips two arrays in a pair", () => {
         const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

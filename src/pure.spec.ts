@@ -1,8 +1,9 @@
 import {
+    drop,
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined,
     filterNotUndefined, filterP, forEachP, groupBy, head, ifEmpty,
     intersperse, isEmpty, isNotEmpty, last, mapP, mapP_, permutations, reduceP,
-    zip, zipWith, zipWithP,
+    take, zip, zipWith, zipWithP,
 } from "./pure";
 
 describe("head", () => {
@@ -279,6 +280,52 @@ describe("repeat", () => {
         const input = [0, 1];
         const actual = repeat(input, 10);
         expect(actual).toEqual([[0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1]]);
+    });
+});
+
+describe("take", () => {
+    test("takes the first n items from an array", () => {
+        const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual = take(input, 3);
+        expect(actual).toEqual([1, 2, 3]);
+    });
+    test("returns itself when n >= input.length", () => {
+        const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual = take(input, 20);
+        expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    });
+    test("returns an empty array when n === 0", () => {
+        const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual = take(input, 0);
+        expect(actual).toEqual([]);
+    });
+    test("returns an empty array when n < 0", () => {
+        const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual = take(input, -1);
+        expect(actual).toEqual([]);
+    });
+});
+
+describe("drop", () => {
+    test("drops the first n items from an array", () => {
+        const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual = drop(input, 3);
+        expect(actual).toEqual([4, 5, 6, 7, 8, 9, 10]);
+    });
+    test("returns an empty array when n >= input.length", () => {
+        const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual = drop(input, 20);
+        expect(actual).toEqual([]);
+    });
+    test("returns itself when n === 0", () => {
+        const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual = drop(input, 0);
+        expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    });
+    test("returns itself when n < 0", () => {
+        const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual = drop(input, -1);
+        expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     });
 });
 
