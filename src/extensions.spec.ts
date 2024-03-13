@@ -96,6 +96,34 @@ describe("Array#filterNotNullNorUndefined", () => {
     });
 });
 
+describe("Array#findP", () => {
+    test("normal case", async () => {
+        const actual = await ["Hello", "Beautiful", "World"].findP(async s => s.length === 5);
+        expect(actual).toEqual("Hello");
+    });
+});
+
+describe("Array#findIndexP", () => {
+    test("normal case", async () => {
+        const actual = await ["Hello", "Beautiful", "World"].findIndexP(async s => s.length === 5);
+        expect(actual).toBe(0);
+    });
+});
+
+describe("Array#findLastP", () => {
+    test("normal case", async () => {
+        const actual = await ["Hello", "Beautiful", "World"].findLastP(async s => s.length === 5);
+        expect(actual).toEqual("World");
+    });
+});
+
+describe("Array#findLastIndexP", () => {
+    test("normal case", async () => {
+        const actual = await ["Hello", "Beautiful", "World"].findLastIndexP(async s => s.length === 5);
+        expect(actual).toBe(2);
+    });
+});
+
 describe("Array#flatMapP", () => {
     test("normal case", async () => {
         const actual: Array<number> = await [1, 2, 3].flatMapP(async n => [n, -n]);

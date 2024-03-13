@@ -81,6 +81,40 @@ export function filterNotNullNorUndefined<T>(values: (T | undefined | null)[]): 
     return filterNotUndefined(filterNotNull(values));
 }
 
+export async function findP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<T | undefined> {
+    const i = await findIndexP(values, pred);
+    if (i !== -1) {
+        return values[i];
+    }
+}
+
+export async function findIndexP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<number> {
+    for (let i = 0; i < values.length; ++i) {
+        const value = values[i];
+        if (await pred(value, i, values)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+export async function findLastP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<T | undefined> {
+    const i = await findLastIndexP(values, pred);
+    if (i !== -1) {
+        return values[i];
+    }
+}
+
+export async function findLastIndexP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<number> {
+    for (let i = values.length - 1; 0 <= i; --i) {
+        const value = values[i];
+        if (await pred(value, i, values)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 export async function flatMapP<T, U>(values: T[], mapper: _Mapper<T, Promise<U[]>>): Promise<U[]> {
     const a = await mapP(values, mapper);
     return a.flat();

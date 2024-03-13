@@ -1,7 +1,7 @@
 import {
     drop, dropWhile, dropWhileP,
-    filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined,
-    filterNotUndefined, filterP, flatMapP, forEachP, groupBy, head, ifEmpty,
+    filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, filterP,
+    findIndexP, findLastIndexP, findLastP, findP, flatMapP, forEachP, groupBy, head, ifEmpty,
     intersperse, isEmpty, isNotEmpty, last, mapP, mapP_, permutations, reduceP,
     take, takeWhile, takeWhileP, zip, zipWith, zipWithP,
 } from "./pure";
@@ -180,6 +180,34 @@ describe("filterNotNullNorUndefined", () => {
     test("returns an array of a not null nor undefined type", () => {
         const actual: Array<number> = filterNotNullNorUndefined([1, 2, 3, 4, 5, null, 6, 7, 8, undefined, 9, 10]);
         expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    });
+});
+
+describe("findP", () => {
+    test("normal case", async () => {
+        const actual = await findP(["Hello", "Beautiful", "World"], async s => s.length === 5);
+        expect(actual).toEqual("Hello");
+    });
+});
+
+describe("findIndexP", () => {
+    test("normal case", async () => {
+        const actual = await findIndexP(["Hello", "Beautiful", "World"], async s => s.length === 5);
+        expect(actual).toBe(0);
+    });
+});
+
+describe("findLastP", () => {
+    test("normal case", async () => {
+        const actual = await findLastP(["Hello", "Beautiful", "World"], async s => s.length === 5);
+        expect(actual).toEqual("World");
+    });
+});
+
+describe("findLastIndexP", () => {
+    test("normal case", async () => {
+        const actual = await findLastIndexP(["Hello", "Beautiful", "World"], async s => s.length === 5);
+        expect(actual).toBe(2);
     });
 });
 
