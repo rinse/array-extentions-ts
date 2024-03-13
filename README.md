@@ -310,15 +310,15 @@ Array.prototype.mapP<U>(callbackFn: (element: T) => Promise<U>): Promise<Array<U
 
 Implementing status:
 
-1. [] everyP
-2. [x] filterP
-3. [x] findP
-4. [x] findIndexP
-5. [x] findLastP
-6. [x] findLastIndexP
-7. [x] flatMapP
-8. [x] forEachP
-9. [x] mapP
-10. [x] reduceP
-11. [] reduceRightP
-12. [] someP
+- [ ] everyP
+- [x] filterP
+- [x] findP
+- [x] findIndexP
+- [x] findLastP
+- [x] findLastIndexP
+- [x] flatMapP
+- [x] forEachP
+- [x] mapP
+- [x] reduceP
+- [ ] reduceRightP
+- [ ] someP
