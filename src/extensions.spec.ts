@@ -6,6 +6,10 @@ describe("Array#head", () => {
         const actual = input.head();
         expect(actual).toEqual([1, [2, 3, 4, 5, 6, 7, 8, 9, 10]]);
     });
+    test("example for readme", () => {
+        const actual = [1, 2, 3].head();
+        expect(actual).toEqual([1, [2, 3]]);
+    });
 });
 
 describe("Array#last", () => {
@@ -13,6 +17,10 @@ describe("Array#last", () => {
         const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const actual = input.last();
         expect(actual).toEqual([[1, 2, 3, 4, 5, 6, 7, 8, 9], 10]);
+    });
+    test("example for readme", () => {
+        const actual = [1, 2, 3].last();
+        expect(actual).toEqual([[1, 2], 3]);
     });
 });
 
@@ -200,6 +208,10 @@ describe("Array#take", () => {
         const actual = input.take(3);
         expect(actual).toEqual([1, 2, 3]);
     });
+    test("example for readme", () => {
+        const actual = [1, 2, 3, 4, 5].take(3);
+        expect(actual).toEqual([1, 2, 3]);
+    });
 });
 
 describe("Array#takeWhile", () => {
@@ -223,6 +235,10 @@ describe("Array#drop", () => {
         const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const actual = input.drop(3);
         expect(actual).toEqual([4, 5, 6, 7, 8, 9, 10]);
+    });
+    test("example for readme", () => {
+        const actual = [1, 2, 3, 4, 5].drop(3);
+        expect(actual).toEqual([4, 5]);
     });
 });
 
@@ -249,6 +265,10 @@ describe("Array#zip", () => {
         const actual = input1.zip(input2);
         expect(actual).toEqual([[1, 'a'], [2, 'b'], [3, 'c'], [4, 'd'], [5, 'e'], [6, 'f'], [7, 'g'], [8, 'h'], [9, 'i'], [10, 'j']]);
     });
+    test("example for readme", () => {
+        const actual = [1, 2, 3].zip(['a', 'b', 'c']);
+        expect(actual).toEqual([[1, 'a'], [2, 'b'], [3, 'c']]);
+    });
 });
 
 describe("Array#zipWith", () => {
@@ -257,6 +277,10 @@ describe("Array#zipWith", () => {
         const input2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const actual = input1.zipWith(input2, (a, b) => a + b);
         expect(actual).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18, 20]);
+    });
+    test("example for readme", () => {
+        const actual = [1, 2, 3, 4, 5].zipWith([10, 9, 8, 7, 6], (a, b) => a + b);
+        expect(actual).toEqual([11, 11, 11, 11, 11]);
     });
 });
 
