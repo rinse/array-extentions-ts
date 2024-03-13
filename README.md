@@ -12,11 +12,31 @@ Includes new APIs and promise variants of higher-ranked functions.
 
 ## Installation
 
+```bash
+npm i --save @rinse418/array-extensions-ts
+```
+
 ## Import Library
 
-### CommonJS
+Importing this library will updates `Array.prototype` by module augmentation.
+
+```javascript
+import "@rinse418/array-extensions-ts";
+```
+
+You can also import [Pure APIs](#pure-apis).
+
+```javascript
+import { mapP } "@rinse418/array-extensions-ts";
+```
 
 ### ESModules
+
+If your module is ES Module, you can import each pure API without updating the global object.
+
+```javascript
+import { mapP } from "@rinse418/array-extensions-ts/pure";
+```
 
 ## API Reference
 
@@ -322,3 +342,16 @@ Implementing status:
 - [x] reduceP
 - [ ] reduceRightP
 - [ ] someP
+
+## Pure APIs
+
+This library exposes pure variants of APIs.
+
+Import each API and pass an array as the first parameter.
+
+```javascript
+import { mapP } "@rinse418/array-extensions-ts";
+
+const actual = await mapP([1, 2, 3], async e => e * 2);
+expect(actual).toEqual([2, 4, 6]);
+```
