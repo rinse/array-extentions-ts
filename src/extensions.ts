@@ -19,7 +19,7 @@ declare global {
         filterNotNull(): Array<NotNull<T>>
         filterNotUndefined(): Array<NotUndefined<T>>
         filterNotNullNorUndefined(): Array<NonNullable<T>>
-        forEachP(mapper: _Mapper<T, Promise<void>>): Promise<void>
+        forEachP(proc: _Mapper<T, Promise<void>>): Promise<void>
         groupBy<K>(keySelector: (value: T) => K): Map<K, T[]>
         mapP<U>(mapper: _Mapper<T, Promise<U>>): Promise<U[]>
         mapP_(mapper: _Mapper<T, Promise<void>>): Promise<void>

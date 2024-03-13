@@ -81,8 +81,8 @@ export function filterNotNullNorUndefined<T>(values: (T | undefined | null)[]): 
     return filterNotUndefined(filterNotNull(values));
 }
 
-export async function forEachP<T>(values: T[], f: _Mapper<T, Promise<void>>): Promise<void> {
-    return mapP_(values, f);
+export async function forEachP<T>(values: T[], proc: _Mapper<T, Promise<void>>): Promise<void> {
+    return mapP_(values, proc);
 }
 
 export function groupBy<T, K>(values: T[], keySelector: (value: T) => K): Map<K, T[]> {
