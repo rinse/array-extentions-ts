@@ -1,7 +1,7 @@
 import {
     drop, dropWhile, dropWhileP,
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined,
-    filterNotUndefined, filterP, forEachP, groupBy, head, ifEmpty,
+    filterNotUndefined, filterP, flatMapP, forEachP, groupBy, head, ifEmpty,
     intersperse, isEmpty, isNotEmpty, last, mapP, mapP_, permutations, reduceP,
     take, takeWhile, takeWhileP, zip, zipWith, zipWithP,
 } from "./pure";
@@ -180,6 +180,13 @@ describe("filterNotNullNorUndefined", () => {
     test("returns an array of a not null nor undefined type", () => {
         const actual: Array<number> = filterNotNullNorUndefined([1, 2, 3, 4, 5, null, 6, 7, 8, undefined, 9, 10]);
         expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    });
+});
+
+describe("flatMapP", () => {
+    test("normal case", async () => {
+        const actual: Array<number> = await flatMapP([1, 2, 3], async n => [n, -n]);
+        expect(actual).toEqual([1, -1, 2, -2, 3, -3]);
     });
 });
 

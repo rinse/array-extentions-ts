@@ -1,6 +1,6 @@
 import {
     _Mapper, drop, dropWhile, dropWhileP, filterMap, filterMapP, filterNotNull,
-    filterNotNullNorUndefined, filterNotUndefined, filterP, forEachP, groupBy, head,
+    filterNotNullNorUndefined, filterNotUndefined, filterP, flatMapP, forEachP, groupBy, head,
     ifEmpty, intersperse, isEmpty, isNotEmpty, last, mapP, mapP_,
     permutations, reduceP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP, zipWithP_,
 } from "./pure";
@@ -19,6 +19,7 @@ declare global {
         filterNotNull(): Array<NotNull<T>>
         filterNotUndefined(): Array<NotUndefined<T>>
         filterNotNullNorUndefined(): Array<NonNullable<T>>
+        flatMapP<U>(mapper: _Mapper<T, Promise<U[]>>): Promise<U[]>
         forEachP(proc: _Mapper<T, Promise<void>>): Promise<void>
         groupBy<K>(keySelector: (value: T) => K): Map<K, T[]>
         mapP<U>(mapper: _Mapper<T, Promise<U>>): Promise<U[]>
@@ -60,6 +61,7 @@ Array.prototype.filterMapP = member(filterMapP);
 Array.prototype.filterNotNull = member(filterNotNull);
 Array.prototype.filterNotUndefined = member(filterNotUndefined);
 Array.prototype.filterNotNullNorUndefined = member(filterNotNullNorUndefined);
+Array.prototype.flatMapP = member(flatMapP);
 Array.prototype.forEachP = member(forEachP);
 Array.prototype.groupBy = member(groupBy);
 Array.prototype.mapP = member(mapP);

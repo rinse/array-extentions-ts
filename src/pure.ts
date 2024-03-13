@@ -81,6 +81,11 @@ export function filterNotNullNorUndefined<T>(values: (T | undefined | null)[]): 
     return filterNotUndefined(filterNotNull(values));
 }
 
+export async function flatMapP<T, U>(values: T[], mapper: _Mapper<T, Promise<U[]>>): Promise<U[]> {
+    const a = await mapP(values, mapper);
+    return a.flat();
+}
+
 export async function forEachP<T>(values: T[], proc: _Mapper<T, Promise<void>>): Promise<void> {
     return mapP_(values, proc);
 }

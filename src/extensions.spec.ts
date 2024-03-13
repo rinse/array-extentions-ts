@@ -96,6 +96,13 @@ describe("Array#filterNotNullNorUndefined", () => {
     });
 });
 
+describe("Array#flatMapP", () => {
+    test("normal case", async () => {
+        const actual: Array<number> = await [1, 2, 3].flatMapP(async n => [n, -n]);
+        expect(actual).toEqual([1, -1, 2, -2, 3, -3]);
+    });
+});
+
 describe("Array#forEachP is the same to mapP_", () => {
     test("normal case", async () => {
         const fn = jest.fn();
