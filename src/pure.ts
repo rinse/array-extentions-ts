@@ -139,31 +139,77 @@ export async function reduceP<T, U>(
 }
 
 export function take<T>(values: T[], n: number): T[] {
-    return [...takeG(values, n)]
+    let i = 0;
+    return takeWhile(values, () => i++ < n);
 }
 
-function* takeG<T>(iterable: Iterable<T>, n: number): Generator<T> {
-    let i = 0;
+export function takeWhile<T>(values: T[], pred: (value: T) => boolean): T[] {
+    const gen = takeWhileG(values, pred);
+    return [...gen];
+}
+
+function* takeWhileG<T>(iterable: Iterable<T>, pred: (value: T) => boolean): Generator<T> {
     for (const value of iterable) {
-        if (n <= i) {
+        if (!pred(value)) {
             break;
         }
         yield value;
-        ++i;
+    }
+}
+
+export async function takeWhileP<T>(values: T[], pred: (value: T) => Promise<boolean>): Promise<T[]> {
+    return await asyncGeneratorToArray(takeWhileAS(values, pred));
+}
+
+async function asyncGeneratorToArray<T>(gen: AsyncGenerator<T>): Promise<T[]> {
+    const ret = [];
+    for await (const value of gen) {
+        ret.push(value);
+    }
+    return ret;
+}
+
+async function* takeWhileAS<T>(iterable: Iterable<T>, pred: (value: T) => Promise<boolean>): AsyncGenerator<T> {
+    for (const value of iterable) {
+        if (!await pred(value)) {
+            break;
+        }
+        yield value;
     }
 }
 
 export function drop<T>(values: T[], n: number): T[] {
-    return [...dropG(values, n)]
+    let i = n;
+    return dropWhile(values, () => 0 < i--);
 }
 
-function* dropG<T>(iterable: Iterable<T>, n: number): Generator<T> {
-    let i = n;
+export function dropWhile<T>(values: T[], pred: (value: T) => boolean): T[] {
+    const gen = dropWhileG(values, pred);
+    return [...gen];
+}
+
+function* dropWhileG<T>(iterable: Iterable<T>, pred: (value: T) => boolean): Generator<T> {
+    let dropping = true;
     for (const value of iterable) {
-        if (0 < i) {
-            --i;
+        if (dropping && pred(value)) {
             continue;
         }
+        dropping = false;
+        yield value;
+    }
+}
+
+export async function dropWhileP<T>(values: T[], pred: (value: T) => Promise<boolean>): Promise<T[]> {
+    return await asyncGeneratorToArray(dropWhileAS(values, pred));
+}
+
+async function* dropWhileAS<T>(iterable: Iterable<T>, pred: (value: T) => Promise<boolean>): AsyncGenerator<T> {
+    let dropping = true;
+    for (const value of iterable) {
+        if (dropping && await pred(value)) {
+            continue;
+        }
+        dropping = false;
         yield value;
     }
 }

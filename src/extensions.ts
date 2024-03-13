@@ -1,8 +1,8 @@
 import {
-    _Mapper, drop, filterMap, filterMapP, filterNotNull,
+    _Mapper, drop, dropWhile, dropWhileP, filterMap, filterMapP, filterNotNull,
     filterNotNullNorUndefined, filterNotUndefined, filterP, forEachP, groupBy, head,
     ifEmpty, intersperse, isEmpty, isNotEmpty, last, mapP, mapP_,
-    permutations, reduceP, take, zip, zipWith, zipWithP, zipWithP_,
+    permutations, reduceP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP, zipWithP_,
 } from "./pure";
 
 declare global {
@@ -26,7 +26,11 @@ declare global {
         permutations(): T[][]
         reduceP<U>(reducer: (acc: U, value: T, index: number, array: T[]) => Promise<U>, initialValue: U): Promise<U>
         take(n: number): T[]
+        takeWhile(pred: (value: T) => boolean): T[]
+        takeWhileP(pred: (value: T) => Promise<boolean>): Promise<T[]>
         drop(n: number): T[]
+        dropWhile(pred: (value: T) => boolean): T[]
+        dropWhileP(pred: (value: T) => Promise<boolean>): Promise<T[]>
         zip<U>(values: Iterable<U>): [T, U][]
         zipWith<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => V): V[]
         zipWithP<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => Promise<V>): Promise<V[]>
@@ -63,7 +67,11 @@ Array.prototype.mapP_ = member(mapP_);
 Array.prototype.permutations = member(permutations);
 Array.prototype.reduceP = member(reduceP);
 Array.prototype.take = member(take);
+Array.prototype.takeWhile = member(takeWhile);
+Array.prototype.takeWhileP = member(takeWhileP);
 Array.prototype.drop = member(drop);
+Array.prototype.dropWhile = member(dropWhile);
+Array.prototype.dropWhileP = member(dropWhileP);
 Array.prototype.zip = member(zip);
 Array.prototype.zipWith = member(zipWith);
 Array.prototype.zipWithP = member(zipWithP);

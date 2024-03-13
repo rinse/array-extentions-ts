@@ -157,11 +157,43 @@ describe("Array#take", () => {
     });
 });
 
+describe("Array#takeWhile", () => {
+    test("takes while the items returns true", () => {
+        const input = [1, 2, 3, 4, 5, 4, 3, 2, 1];
+        const actual = input.takeWhile(n => n < 5);
+        expect(actual).toEqual([1, 2, 3, 4]);
+    });
+});
+
+describe("Array#takeWhileP", () => {
+    test("takes while the items returns true", async () => {
+        const input = [1, 2, 3, 4, 5, 4, 3, 2, 1];
+        const actual = await input.takeWhileP(async n => n < 5);
+        expect(actual).toEqual([1, 2, 3, 4]);
+    });
+});
+
 describe("Array#drop", () => {
     test("drops the first n items from an array", () => {
         const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const actual = input.drop(3);
         expect(actual).toEqual([4, 5, 6, 7, 8, 9, 10]);
+    });
+});
+
+describe("Array#dropWhile", () => {
+    test("drops while the items returns true", () => {
+        const input = [1, 2, 3, 4, 5, 4, 3, 2, 1];
+        const actual = input.dropWhile(n => n < 5);
+        expect(actual).toEqual([5, 4, 3, 2, 1]);
+    });
+});
+
+describe("Array#dropWhileP", () => {
+    test("drops while the items returns true", async () => {
+        const input = [1, 2, 3, 4, 5, 4, 3, 2, 1];
+        const actual = await input.dropWhileP(async n => n < 5);
+        expect(actual).toEqual([5, 4, 3, 2, 1]);
     });
 });
 

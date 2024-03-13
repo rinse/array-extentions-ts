@@ -1,9 +1,9 @@
 import {
-    drop,
+    drop, dropWhile, dropWhileP,
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined,
     filterNotUndefined, filterP, forEachP, groupBy, head, ifEmpty,
     intersperse, isEmpty, isNotEmpty, last, mapP, mapP_, permutations, reduceP,
-    take, zip, zipWith, zipWithP,
+    take, takeWhile, takeWhileP, zip, zipWith, zipWithP,
 } from "./pure";
 
 describe("head", () => {
@@ -306,6 +306,22 @@ describe("take", () => {
     });
 });
 
+describe("takeWhile", () => {
+    test("takes while the items returns true", () => {
+        const input = [1, 2, 3, 4, 5, 4, 3, 2, 1];
+        const actual = takeWhile(input, n => n < 5);
+        expect(actual).toEqual([1, 2, 3, 4]);
+    });
+});
+
+describe("takeWhileP", () => {
+    test("takes while the items returns true", async () => {
+        const input = [1, 2, 3, 4, 5, 4, 3, 2, 1];
+        const actual = await takeWhileP(input, async n => n < 5);
+        expect(actual).toEqual([1, 2, 3, 4]);
+    });
+});
+
 describe("drop", () => {
     test("drops the first n items from an array", () => {
         const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -326,6 +342,22 @@ describe("drop", () => {
         const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const actual = drop(input, -1);
         expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    });
+});
+
+describe("dropWhile", () => {
+    test("drops while the items returns true", () => {
+        const input = [1, 2, 3, 4, 5, 4, 3, 2, 1];
+        const actual = dropWhile(input, n => n < 5);
+        expect(actual).toEqual([5, 4, 3, 2, 1]);
+    });
+});
+
+describe("dropWhileP", () => {
+    test("drops while the items returns true", async () => {
+        const input = [1, 2, 3, 4, 5, 4, 3, 2, 1];
+        const actual = await dropWhileP(input, async n => n < 5);
+        expect(actual).toEqual([5, 4, 3, 2, 1]);
     });
 });
 
