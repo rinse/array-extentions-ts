@@ -174,6 +174,16 @@ describe("Array#mapP_", () => {
     });
 });
 
+describe("Array#permutations", () => {
+    test("enumerates permutations", () => {
+        const actual = [1, 2, 3].permutations();
+        expect(actual).toEqual([
+            [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]
+        ]);
+    });
+});
+
+
 describe("Array#reduceP", () => {
     test("behaves the save to reduce except handling of promise", async () => {
         const input = [[0, 1], [2, 3], [4, 5]];
