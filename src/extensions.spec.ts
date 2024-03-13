@@ -88,6 +88,10 @@ describe("Array#filterNotNull", () => {
         const actual: Array<number | undefined> = [1, 2, 3, 4, 5, null, 6, 7, 8, undefined, 9, 10].filterNotNull();
         expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7, 8, undefined, 9, 10]);
     });
+    test("example for readme", () => {
+        const actual: Array<number | undefined> = [1, null, 2, undefined, 3].filterNotNull();
+        expect(actual).toEqual([1, 2, undefined, 3]);
+    });
 });
 
 describe("Array#filterNotUndefined", () => {

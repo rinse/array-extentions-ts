@@ -141,8 +141,8 @@ Array.prototype.filterNotNullNorUndefined(): Array<NonNullable<T>>
 Example:
 
 ```javascript
-const actual: Array<number | undefined> = [1, 2, 3, 4, 5, null, 6, 7, 8, undefined, 9, 10].filterNotNull();
-expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7, 8, undefined, 9, 10]);
+const actual: Array<number | undefined> = [1, null, 2, undefined, 3].filterNotNull();
+expect(actual).toEqual([1, 2, undefined, 3]);
 ```
 
 ### groupBy
