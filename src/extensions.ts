@@ -1,7 +1,7 @@
 import {
     _CallbackFn, drop, dropWhile, dropWhileP, everyP,
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, filterP,
-    findIndexP, findLastIndexP, findLastP, findP, flatMapP, forEachP, groupBy, head,
+    findIndexP, findLastIndexP, findLastP, findP, flatMapP, forEachP, groupBy, groupByP, head,
     ifEmpty, intersperse, isEmpty, isNotEmpty, last, mapP, mapP_,
     permutations, reduceP, reduceRightP, someP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP, zipWithP_,
 } from "./pure";
@@ -27,6 +27,7 @@ declare global {
         flatMapP<U>(mapper: _CallbackFn<T, Promise<U[]>>): Promise<U[]>
         forEachP(proc: _CallbackFn<T, Promise<void>>): Promise<void>
         groupBy<K>(keySelector: _CallbackFn<T, K>): Map<K, T[]>
+        groupByP<K>(keySelector: _CallbackFn<T, Promise<K>>): Promise<Map<K, T[]>>
         mapP<U>(mapper: _CallbackFn<T, Promise<U>>): Promise<U[]>
         mapP_(mapper: _CallbackFn<T, Promise<void>>): Promise<void>
         permutations(): T[][]
@@ -76,6 +77,7 @@ Array.prototype.findLastP = member(findLastP);
 Array.prototype.findLastIndexP = member(findLastIndexP);
 Array.prototype.forEachP = member(forEachP);
 Array.prototype.groupBy = member(groupBy);
+Array.prototype.groupByP = member(groupByP);
 Array.prototype.mapP = member(mapP);
 Array.prototype.mapP_ = member(mapP_);
 Array.prototype.permutations = member(permutations);

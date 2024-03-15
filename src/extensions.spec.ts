@@ -166,6 +166,19 @@ describe("Array#groupBy", () => {
     });
 });
 
+describe("Array#groupByP", () => {
+    test("groups by a given key", async () => {
+        const actual = await [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].groupByP(async value => {
+            return value % 2 === 0 ? "even" : "odd";
+        });
+        expect(actual).toEqual(
+            new Map([
+                ["even", [2, 4, 6, 8, 10]],
+                ["odd", [1, 3, 5, 7, 9]],
+            ]));
+    });
+});
+
 describe("Array#mapP", () => {
     test("normal case", async () => {
         const actual = await [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].mapP(async e => {

@@ -165,12 +165,13 @@ const actual: Array<number | undefined> = [1, null, 2, undefined, 3].filterNotNu
 expect(actual).toEqual([1, 2, undefined, 3]);
 ```
 
-### groupBy
+### groupBy and groupByP
 
 Groups array elements by the key selector and returns `Map`.
 
 ```javascript
 Array.prototype.groupBy<K>(keySelector: (value: T) => K): Map<K, T[]>
+Array.prototype.groupByP<K>(keySelector: (value: T) => Promise<K>): Promise<Map<K, T[]>>
 ```
 
 Example:

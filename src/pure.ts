@@ -130,12 +130,32 @@ export function groupBy<T, K>(values: T[], keySelector: _CallbackFn<T, K>): Map<
         const value = values[i];
         const key = keySelector(value, i, values);
         const mapValue = ret.get(key);
-        if (mapValue !== undefined) {
-            mapValue.push(value);
-        } else {
+        if (mapValue === undefined) {
             ret.set(key, [value]);
+        } else {
+            mapValue.push(value);
         }
     }
+    return ret;
+}
+
+export async function groupByP<T, K>(values: T[], keySelector: _CallbackFn<T, Promise<K>>): Promise<Map<K, T[]>> {
+    const ret = new Map<K, T[]>();
+    const tasks: Promise<void>[] = [];
+    const createTask = async (value: T, i: number) => {
+        const key = await keySelector(value, i, values);
+        const mapValue = ret.get(key);
+        if (mapValue === undefined) {
+            ret.set(key, [value]);
+        } else {
+            mapValue.push(value);
+        }
+    };
+    for (let i = 0; i < values.length; ++i) {
+        const value = values[i];
+        tasks.push(createTask(value, i));
+    }
+    await Promise.all(tasks);
     return ret;
 }
 

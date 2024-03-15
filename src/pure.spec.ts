@@ -1,7 +1,7 @@
 import {
     drop, dropWhile, dropWhileP, everyP,
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, filterP,
-    findIndexP, findLastIndexP, findLastP, findP, flatMapP, forEachP, groupBy, head, ifEmpty,
+    findIndexP, findLastIndexP, findLastP, findP, flatMapP, forEachP, groupBy, groupByP, head, ifEmpty,
     intersperse, isEmpty, isNotEmpty, last, mapP, mapP_, permutations,
     reduceP, reduceRightP, someP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP,
 } from "./pure";
@@ -231,6 +231,19 @@ describe("forEachP is the same to mapP_", () => {
 describe("groupBy", () => {
     test("groups by a given key", () => {
         const actual = groupBy([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], value => {
+            return value % 2 === 0 ? "even" : "odd";
+        });
+        expect(actual).toEqual(
+            new Map([
+                ["even", [2, 4, 6, 8, 10]],
+                ["odd", [1, 3, 5, 7, 9]],
+            ]));
+    });
+});
+
+describe("groupByP", () => {
+    test("groups by a given key", async () => {
+        const actual = await groupByP([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], async value => {
             return value % 2 === 0 ? "even" : "odd";
         });
         expect(actual).toEqual(
