@@ -1,9 +1,9 @@
 import {
-    _Mapper, drop, dropWhile, dropWhileP,
+    _Mapper, drop, dropWhile, dropWhileP, everyP,
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, filterP,
     findIndexP, findLastIndexP, findLastP, findP, flatMapP, forEachP, groupBy, head,
     ifEmpty, intersperse, isEmpty, isNotEmpty, last, mapP, mapP_,
-    permutations, reduceP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP, zipWithP_,
+    permutations, reduceP, someP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP, zipWithP_,
 } from "./pure";
 
 declare global {
@@ -37,6 +37,8 @@ declare global {
         drop(n: number): T[]
         dropWhile(pred: (value: T) => boolean): T[]
         dropWhileP(pred: (value: T) => Promise<boolean>): Promise<T[]>
+        everyP(pred: _Mapper<T, Promise<boolean>>): Promise<boolean>
+        someP(pred: _Mapper<T, Promise<boolean>>): Promise<boolean>
         zip<U>(values: Iterable<U>): [T, U][]
         zipWith<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => V): V[]
         zipWithP<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => Promise<V>): Promise<V[]>
@@ -83,6 +85,8 @@ Array.prototype.takeWhileP = member(takeWhileP);
 Array.prototype.drop = member(drop);
 Array.prototype.dropWhile = member(dropWhile);
 Array.prototype.dropWhileP = member(dropWhileP);
+Array.prototype.everyP = member(everyP);
+Array.prototype.someP = member(someP);
 Array.prototype.zip = member(zip);
 Array.prototype.zipWith = member(zipWith);
 Array.prototype.zipWithP = member(zipWithP);

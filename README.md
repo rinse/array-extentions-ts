@@ -330,7 +330,7 @@ Array.prototype.mapP<U>(callbackFn: (element: T) => Promise<U>): Promise<Array<U
 
 Implementing status:
 
-- [ ] everyP
+- [x] everyP
 - [x] filterP
 - [x] findP
 - [x] findIndexP
@@ -341,7 +341,7 @@ Implementing status:
 - [x] mapP
 - [x] reduceP
 - [ ] reduceRightP
-- [ ] someP
+- [x] someP
 
 ## Pure APIs
 

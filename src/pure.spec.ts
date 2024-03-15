@@ -1,9 +1,9 @@
 import {
-    drop, dropWhile, dropWhileP,
+    drop, dropWhile, dropWhileP, everyP,
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, filterP,
     findIndexP, findLastIndexP, findLastP, findP, flatMapP, forEachP, groupBy, head, ifEmpty,
     intersperse, isEmpty, isNotEmpty, last, mapP, mapP_, permutations, reduceP,
-    take, takeWhile, takeWhileP, zip, zipWith, zipWithP,
+    someP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP,
 } from "./pure";
 
 describe("head", () => {
@@ -393,6 +393,28 @@ describe("dropWhileP", () => {
         const input = [1, 2, 3, 4, 5, 4, 3, 2, 1];
         const actual = await dropWhileP(input, async n => n < 5);
         expect(actual).toEqual([5, 4, 3, 2, 1]);
+    });
+});
+
+describe("everyP", () => {
+    test("returns true if all values satisfies the predicate", async () => {
+        const actual = await everyP([1, 30, 39, 29, 10, 13], async n => n < 50)
+        expect(actual).toBe(true);
+    });
+    test("returns false if any value does not satisfy the predicate", async () => {
+        const actual = await everyP([1, 30, 39, 50, 10, 13], async n => n < 50)
+        expect(actual).toBe(false);
+    });
+});
+
+describe("someP", () => {
+    test("returns true if any value satisfies the predicate", async () => {
+        const actual = await someP([100, 300, 390, 49, 100, 130], async n => n < 50)
+        expect(actual).toBe(true);
+    });
+    test("returns false if no values do not satisfy the predicate", async () => {
+        const actual = await someP([100, 300, 390, 290, 100, 130], async n => n < 50)
+        expect(actual).toBe(false);
     });
 });
 

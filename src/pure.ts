@@ -253,6 +253,20 @@ async function* dropWhileAS<T>(iterable: Iterable<T>, pred: (value: T) => Promis
     }
 }
 
+export async function everyP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<boolean> {
+    const results = await mapP(values, pred);
+    return results.every(identity);
+}
+
+export async function someP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<boolean> {
+    const results = await mapP(values, pred);
+    return results.some(identity);
+}
+
+function identity<T>(a: T): T {
+    return a;
+}
+
 export function zip<A, B>(a: A[], b: Iterable<B>): [A, B][] {
     return zipWith(a, b, (a, b) => [a, b]);
 }

@@ -262,6 +262,20 @@ describe("Array#dropWhileP", () => {
     });
 });
 
+describe("Array#everyP", () => {
+    test("returns true if all values satisfies the predicate", async () => {
+        const actual = await [1, 30, 39, 29, 10, 13].everyP(async n => n < 50)
+        expect(actual).toBe(true);
+    });
+});
+
+describe("Array#someP", () => {
+    test("returns true if any value satisfies the predicate", async () => {
+        const actual = await [100, 300, 390, 49, 100, 130].someP(async n => n < 50)
+        expect(actual).toBe(true);
+    });
+});
+
 describe("Array#zip", () => {
     test("zips two arrays in a pair", () => {
         const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
