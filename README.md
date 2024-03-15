@@ -296,12 +296,13 @@ const actual = [1, 2, 3].zip(['a', 'b', 'c']);
 expect(actual).toEqual([[1, 'a'], [2, 'b'], [3, 'c']]);
 ```
 
-### zipWith, zipWithP and zipWithP_
+### zipWith, zipWith_, zipWithP and zipWithP_
 
 Zips two arrays with the given zipper function.
 
 ```javascript
 Array.prototype.zipWith<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => V): V[]
+Array.prototype.zipWith_<U>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => void)
 Array.prototype.zipWithP<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => Promise<V>): Promise<V[]>
 Array.prototype.zipWithP_<U>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => Promise<void>): Promise<void>
 ```

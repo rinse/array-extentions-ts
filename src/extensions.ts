@@ -3,7 +3,7 @@ import {
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, filterP,
     findIndexP, findLastIndexP, findLastP, findP, flatMapP, forEachP, groupBy, groupByP, head,
     ifEmpty, intersperse, isEmpty, isNotEmpty, last, mapP, mapP_,
-    permutations, reduceP, reduceRightP, someP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP, zipWithP_,
+    permutations, reduceP, reduceRightP, someP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP, zipWithP_, zipWith_,
 } from "./pure";
 
 declare global {
@@ -43,6 +43,7 @@ declare global {
         someP(pred: _CallbackFn<T, Promise<boolean>>): Promise<boolean>
         zip<U>(values: Iterable<U>): [T, U][]
         zipWith<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => V): V[]
+        zipWith_<U>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => void): void
         zipWithP<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => Promise<V>): Promise<V[]>
         zipWithP_<U>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => Promise<void>): Promise<void>
     }
@@ -93,5 +94,6 @@ Array.prototype.everyP = member(everyP);
 Array.prototype.someP = member(someP);
 Array.prototype.zip = member(zip);
 Array.prototype.zipWith = member(zipWith);
+Array.prototype.zipWith_ = member(zipWith_);
 Array.prototype.zipWithP = member(zipWithP);
 Array.prototype.zipWithP_ = member(zipWithP_);

@@ -324,6 +324,16 @@ describe("Array#zipWith", () => {
     });
 });
 
+describe("Array#zipWith_", () => {
+    test("iterates two arrays at the same time", () => {
+        const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const input2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual: number[] = [];
+        input1.zipWith_(input2, (a, b) => actual.push(a + b));
+        expect(actual).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18, 20]);
+    });
+});
+
 describe("Array#zipWithP", () => {
     test("behaves the same expect handing of promise", async () => {
         const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -331,6 +341,17 @@ describe("Array#zipWithP", () => {
         const actual = await input1.zipWithP(input2, async (a, b) => a + b);
         const expected = input1.zipWith(input2, (a, b) => a + b);
         expect(actual).toEqual(expected);
+    });
+});
+
+describe("Array#zipWithP_", () => {
+    test("iterates two arrays at the same time", async () => {
+        const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const input2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual: number[] = [];
+        await input1.zipWithP_(input2, async (a, b) => { actual.push(a + b) });
+        actual.sort((a, b) => a - b);
+        expect(actual).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18, 20]);
     });
 });
 

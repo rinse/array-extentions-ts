@@ -304,6 +304,10 @@ export function zipWith<A, B, C>(a: A[], b: Iterable<B>, zipper: (a: A, b: B, in
     return [...gen];
 }
 
+export function zipWith_<A, B>(a: A[], b: Iterable<B>, zipper: (a: A, b: B, index: number) => void) {
+    zipWith(a, b, zipper);
+}
+
 function* zipWithG<A, B, C>(a: Iterable<A>, b: Iterable<B>, zipper: (a: A, b: B, index: number) => C) {
     const aIter = a[Symbol.iterator]();
     const bIter = b[Symbol.iterator]();

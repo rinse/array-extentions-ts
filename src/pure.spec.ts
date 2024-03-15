@@ -3,7 +3,7 @@ import {
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, filterP,
     findIndexP, findLastIndexP, findLastP, findP, flatMapP, forEachP, groupBy, groupByP, head, ifEmpty,
     intersperse, isEmpty, isNotEmpty, last, mapP, mapP_, permutations,
-    reduceP, reduceRightP, someP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP,
+    reduceP, reduceRightP, someP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP, zipWithP_, zipWith_,
 } from "./pure";
 
 describe("head", () => {
@@ -476,6 +476,16 @@ describe("zipWith", () => {
     });
 });
 
+describe("zipWith_", () => {
+    test("iterates two arrays at the same time", () => {
+        const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const input2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual: number[] = [];
+        zipWith_(input1, input2, (a, b) => actual.push(a + b));
+        expect(actual).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18, 20]);
+    });
+});
+
 describe("zipWithP", () => {
     test("behaves the same expect handing of promise", async () => {
         const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -489,6 +499,17 @@ describe("zipWithP", () => {
         const input2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const actual = zipWith(input1, input2, (a, b, index) => index);
         expect(actual).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    });
+});
+
+describe("zipWithP_", () => {
+    test("iterates two arrays at the same time", async () => {
+        const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const input2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const actual: number[] = [];
+        await zipWithP_(input1, input2, async (a, b) => { actual.push(a + b) });
+        actual.sort((a, b) => a - b);
+        expect(actual).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18, 20]);
     });
 });
 
