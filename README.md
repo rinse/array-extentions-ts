@@ -150,7 +150,7 @@ expect(actual).toEqual([4, 8, 12, 16, 20]);
 
 ### filterNotNull, filterNotUndefined and filterNotNullNorUndefined
 
-Skips null values, undefined values or both of them respectively.
+Removes null values, undefined values or both of them respectively.
 
 ```javascript
 Array.prototype.filterNotNull(): Array<NotNull<T>>
@@ -238,7 +238,7 @@ expect(actual).toEqual([1, 2, 3]);
 
 ### takeWhile and taleWhileP
 
-Takes the first elements while the predicate returns `true`.
+Takes the elements while the predicate returns `true`.
 
 ```javascript
 Array.prototype.takeWhile(pred: (value: T) => boolean): T[]
@@ -268,6 +268,8 @@ expect(actual).toEqual([4, 5]);
 ```
 
 ### dropWhile and dropWhileP
+
+Drops elements while the predicate returns true.
 
 ```javascript
 Array.prototype.dropWhile(pred: (value: T) => boolean): T[]
