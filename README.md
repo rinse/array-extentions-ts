@@ -340,7 +340,7 @@ Implementing status:
 - [x] forEachP
 - [x] mapP
 - [x] reduceP
-- [ ] reduceRightP
+- [x] reduceRightP
 - [x] someP
 
 ## Pure APIs

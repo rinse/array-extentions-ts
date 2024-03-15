@@ -3,7 +3,7 @@ import {
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, filterP,
     findIndexP, findLastIndexP, findLastP, findP, flatMapP, forEachP, groupBy, head,
     ifEmpty, intersperse, isEmpty, isNotEmpty, last, mapP, mapP_,
-    permutations, reduceP, someP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP, zipWithP_,
+    permutations, reduceP, reduceRightP, someP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP, zipWithP_,
 } from "./pure";
 
 declare global {
@@ -31,6 +31,7 @@ declare global {
         mapP_(mapper: _Mapper<T, Promise<void>>): Promise<void>
         permutations(): T[][]
         reduceP<U>(reducer: (acc: U, value: T, index: number, array: T[]) => Promise<U>, initialValue: U): Promise<U>
+        reduceRightP<U>(reducer: (acc: U, value: T, index: number, array: T[]) => Promise<U>, initialValue: U): Promise<U>
         take(n: number): T[]
         takeWhile(pred: (value: T) => boolean): T[]
         takeWhileP(pred: (value: T) => Promise<boolean>): Promise<T[]>
@@ -79,6 +80,7 @@ Array.prototype.mapP = member(mapP);
 Array.prototype.mapP_ = member(mapP_);
 Array.prototype.permutations = member(permutations);
 Array.prototype.reduceP = member(reduceP);
+Array.prototype.reduceRightP = member(reduceRightP);
 Array.prototype.take = member(take);
 Array.prototype.takeWhile = member(takeWhile);
 Array.prototype.takeWhileP = member(takeWhileP);

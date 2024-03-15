@@ -195,13 +195,22 @@ describe("Array#permutations", () => {
     });
 });
 
-
 describe("Array#reduceP", () => {
     test("behaves the save to reduce except handling of promise", async () => {
         const input = [[0, 1], [2, 3], [4, 5]];
         const init = [6, 7];
         const actual = await input.reduceP(async (acc, e) => acc.concat(e), init);
         const expected = input.reduce((acc, e) => acc.concat(e), init);
+        expect(actual).toEqual(expected);
+    });
+});
+
+describe("Array#reduceRightP", () => {
+    test("behaves the save to reduce except handling of promise", async () => {
+        const input = [[0, 1], [2, 3], [4, 5]];
+        const init = [6, 7];
+        const actual = await input.reduceRightP(async (acc, e) => acc.concat(e), init);
+        const expected = input.reduceRight((acc, e) => acc.concat(e), init);
         expect(actual).toEqual(expected);
     });
 });

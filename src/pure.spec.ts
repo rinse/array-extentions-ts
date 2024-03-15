@@ -2,8 +2,8 @@ import {
     drop, dropWhile, dropWhileP, everyP,
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, filterP,
     findIndexP, findLastIndexP, findLastP, findP, flatMapP, forEachP, groupBy, head, ifEmpty,
-    intersperse, isEmpty, isNotEmpty, last, mapP, mapP_, permutations, reduceP,
-    someP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP,
+    intersperse, isEmpty, isNotEmpty, last, mapP, mapP_, permutations,
+    reduceP, reduceRightP, someP, take, takeWhile, takeWhileP, zip, zipWith, zipWithP,
 } from "./pure";
 
 describe("head", () => {
@@ -301,11 +301,21 @@ describe("permutations", () => {
 });
 
 describe("reduceP", () => {
-    test("behaves the save to reduce except handling of promise", async () => {
+    test("behaves the same to reduce except handling of promise", async () => {
         const input = [[0, 1], [2, 3], [4, 5]];
         const init = [6, 7];
         const actual = await reduceP(input, async (acc, e) => acc.concat(e), init);
         const expected = input.reduce((acc, e) => acc.concat(e), init);
+        expect(actual).toEqual(expected);
+    });
+});
+
+describe("reduceRightP", () => {
+    test("behaves the same to reduceRight except handling of promise", async () => {
+        const input = [[0, 1], [2, 3], [4, 5]];
+        const init = [6, 7];
+        const actual = await reduceRightP(input, async (acc, e) => acc.concat(e), init);
+        const expected = input.reduceRight((acc, e) => acc.concat(e), init);
         expect(actual).toEqual(expected);
     });
 });

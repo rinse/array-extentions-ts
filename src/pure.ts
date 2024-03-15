@@ -177,6 +177,19 @@ export async function reduceP<T, U>(
     return acc;
 }
 
+export async function reduceRightP<T, U>(
+    values: T[],
+    reducer: (acc: U, value: T, index: number, array: T[]) => Promise<U>,
+    initialValue: U,
+): Promise<U> {
+    let acc = initialValue;
+    for (let i = values.length - 1; 0 <= i; --i) {
+        const value = values[i];
+        acc = await reducer(acc, value, i, values);
+    }
+    return acc;
+}
+
 export function take<T>(values: T[], n: number): T[] {
     let i = 0;
     return takeWhile(values, () => i++ < n);
