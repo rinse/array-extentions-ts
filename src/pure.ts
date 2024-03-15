@@ -124,10 +124,11 @@ export async function forEachP<T>(values: T[], proc: _Mapper<T, Promise<void>>):
     return mapP_(values, proc);
 }
 
-export function groupBy<T, K>(values: T[], keySelector: (value: T) => K): Map<K, T[]> {
+export function groupBy<T, K>(values: T[], keySelector: _Mapper<T, K>): Map<K, T[]> {
     const ret = new Map<K, T[]>();
-    for (const value of values) {
-        const key = keySelector(value);
+    for (let i = 0; i < values.length; ++i) {
+        const value = values[i];
+        const key = keySelector(value, i, values);
         const mapValue = ret.get(key);
         if (mapValue !== undefined) {
             mapValue.push(value);
@@ -195,22 +196,28 @@ export function take<T>(values: T[], n: number): T[] {
     return takeWhile(values, () => i++ < n);
 }
 
-export function takeWhile<T>(values: T[], pred: (value: T) => boolean): T[] {
-    const gen = takeWhileG(values, pred);
-    return [...gen];
-}
-
-function* takeWhileG<T>(iterable: Iterable<T>, pred: (value: T) => boolean): Generator<T> {
-    for (const value of iterable) {
-        if (!pred(value)) {
+export function takeWhile<T>(values: T[], pred: _Mapper<T, boolean>): T[] {
+    const ret: T[] = [];
+    for (let i = 0; i < values.length; ++i) {
+        const value = values[i];
+        if (!pred(value, i, values)) {
             break;
         }
-        yield value;
+        ret.push(value);
     }
+    return ret;
 }
 
-export async function takeWhileP<T>(values: T[], pred: (value: T) => Promise<boolean>): Promise<T[]> {
-    return await asyncGeneratorToArray(takeWhileAS(values, pred));
+export async function takeWhileP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<T[]> {
+    const ret: T[] = [];
+    for (let i = 0; i < values.length; ++i) {
+        const value = values[i];
+        if (!await pred(value, i, values)) {
+            break;
+        }
+        ret.push(value);
+    }
+    return ret;
 }
 
 async function asyncGeneratorToArray<T>(gen: AsyncGenerator<T>): Promise<T[]> {
@@ -221,49 +228,37 @@ async function asyncGeneratorToArray<T>(gen: AsyncGenerator<T>): Promise<T[]> {
     return ret;
 }
 
-async function* takeWhileAS<T>(iterable: Iterable<T>, pred: (value: T) => Promise<boolean>): AsyncGenerator<T> {
-    for (const value of iterable) {
-        if (!await pred(value)) {
-            break;
-        }
-        yield value;
-    }
-}
-
 export function drop<T>(values: T[], n: number): T[] {
     let i = n;
     return dropWhile(values, () => 0 < i--);
 }
 
-export function dropWhile<T>(values: T[], pred: (value: T) => boolean): T[] {
-    const gen = dropWhileG(values, pred);
-    return [...gen];
-}
-
-function* dropWhileG<T>(iterable: Iterable<T>, pred: (value: T) => boolean): Generator<T> {
+export function dropWhile<T>(values: T[], pred: _Mapper<T, boolean>): T[] {
+    const ret = [];
     let dropping = true;
-    for (const value of iterable) {
-        if (dropping && pred(value)) {
+    for (let i = 0; i < values.length; ++i) {
+        const value = values[i];
+        if (dropping && pred(value, i, values)) {
             continue;
         }
         dropping = false;
-        yield value;
+        ret.push(value);
     }
+    return ret;
 }
 
-export async function dropWhileP<T>(values: T[], pred: (value: T) => Promise<boolean>): Promise<T[]> {
-    return await asyncGeneratorToArray(dropWhileAS(values, pred));
-}
-
-async function* dropWhileAS<T>(iterable: Iterable<T>, pred: (value: T) => Promise<boolean>): AsyncGenerator<T> {
+export async function dropWhileP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<T[]> {
+    const ret = [];
     let dropping = true;
-    for (const value of iterable) {
-        if (dropping && await pred(value)) {
+    for (let i = 0; i < values.length; ++i) {
+        const value = values[i];
+        if (dropping && await pred(value, i, values)) {
             continue;
         }
         dropping = false;
-        yield value;
+        ret.push(value);
     }
+    return ret;
 }
 
 export async function everyP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<boolean> {

@@ -26,18 +26,18 @@ declare global {
         findLastIndexP(pred: _Mapper<T, Promise<boolean>>): Promise<number>
         flatMapP<U>(mapper: _Mapper<T, Promise<U[]>>): Promise<U[]>
         forEachP(proc: _Mapper<T, Promise<void>>): Promise<void>
-        groupBy<K>(keySelector: (value: T) => K): Map<K, T[]>
+        groupBy<K>(keySelector: _Mapper<T, K>): Map<K, T[]>
         mapP<U>(mapper: _Mapper<T, Promise<U>>): Promise<U[]>
         mapP_(mapper: _Mapper<T, Promise<void>>): Promise<void>
         permutations(): T[][]
         reduceP<U>(reducer: (acc: U, value: T, index: number, array: T[]) => Promise<U>, initialValue: U): Promise<U>
         reduceRightP<U>(reducer: (acc: U, value: T, index: number, array: T[]) => Promise<U>, initialValue: U): Promise<U>
         take(n: number): T[]
-        takeWhile(pred: (value: T) => boolean): T[]
-        takeWhileP(pred: (value: T) => Promise<boolean>): Promise<T[]>
+        takeWhile(pred: _Mapper<T, boolean>): T[]
+        takeWhileP(pred: _Mapper<T, Promise<boolean>>): Promise<T[]>
         drop(n: number): T[]
-        dropWhile(pred: (value: T) => boolean): T[]
-        dropWhileP(pred: (value: T) => Promise<boolean>): Promise<T[]>
+        dropWhile(pred: _Mapper<T, boolean>): T[]
+        dropWhileP(pred: _Mapper<T, Promise<boolean>>): Promise<T[]>
         everyP(pred: _Mapper<T, Promise<boolean>>): Promise<boolean>
         someP(pred: _Mapper<T, Promise<boolean>>): Promise<boolean>
         zip<U>(values: Iterable<U>): [T, U][]
