@@ -1,5 +1,5 @@
 import {
-    _Mapper, drop, dropWhile, dropWhileP, everyP,
+    _CallbackFn, drop, dropWhile, dropWhileP, everyP,
     filterMap, filterMapP, filterNotNull, filterNotNullNorUndefined, filterNotUndefined, filterP,
     findIndexP, findLastIndexP, findLastP, findP, flatMapP, forEachP, groupBy, head,
     ifEmpty, intersperse, isEmpty, isNotEmpty, last, mapP, mapP_,
@@ -14,32 +14,32 @@ declare global {
         ifEmpty(defaultValue: () => T[]): T[]
         isNotEmpty(): boolean
         intersperse(element: T): T[]
-        filterP(mapper: _Mapper<T, Promise<boolean>>): Promise<Array<T>>
-        filterMap<U>(mapper: _Mapper<T, U | undefined>): Array<U>
-        filterMapP<U>(mapper: _Mapper<T, Promise<U | undefined>>): Promise<U[]>
+        filterP(mapper: _CallbackFn<T, Promise<boolean>>): Promise<Array<T>>
+        filterMap<U>(mapper: _CallbackFn<T, U | undefined>): Array<U>
+        filterMapP<U>(mapper: _CallbackFn<T, Promise<U | undefined>>): Promise<U[]>
         filterNotNull(): Array<NotNull<T>>
         filterNotUndefined(): Array<NotUndefined<T>>
         filterNotNullNorUndefined(): Array<NonNullable<T>>
-        findP(pred: _Mapper<T, Promise<boolean>>): Promise<T | undefined>
-        findIndexP(pred: _Mapper<T, Promise<boolean>>): Promise<number>
-        findLastP(pred: _Mapper<T, Promise<boolean>>): Promise<T | undefined>
-        findLastIndexP(pred: _Mapper<T, Promise<boolean>>): Promise<number>
-        flatMapP<U>(mapper: _Mapper<T, Promise<U[]>>): Promise<U[]>
-        forEachP(proc: _Mapper<T, Promise<void>>): Promise<void>
-        groupBy<K>(keySelector: _Mapper<T, K>): Map<K, T[]>
-        mapP<U>(mapper: _Mapper<T, Promise<U>>): Promise<U[]>
-        mapP_(mapper: _Mapper<T, Promise<void>>): Promise<void>
+        findP(pred: _CallbackFn<T, Promise<boolean>>): Promise<T | undefined>
+        findIndexP(pred: _CallbackFn<T, Promise<boolean>>): Promise<number>
+        findLastP(pred: _CallbackFn<T, Promise<boolean>>): Promise<T | undefined>
+        findLastIndexP(pred: _CallbackFn<T, Promise<boolean>>): Promise<number>
+        flatMapP<U>(mapper: _CallbackFn<T, Promise<U[]>>): Promise<U[]>
+        forEachP(proc: _CallbackFn<T, Promise<void>>): Promise<void>
+        groupBy<K>(keySelector: _CallbackFn<T, K>): Map<K, T[]>
+        mapP<U>(mapper: _CallbackFn<T, Promise<U>>): Promise<U[]>
+        mapP_(mapper: _CallbackFn<T, Promise<void>>): Promise<void>
         permutations(): T[][]
         reduceP<U>(reducer: (acc: U, value: T, index: number, array: T[]) => Promise<U>, initialValue: U): Promise<U>
         reduceRightP<U>(reducer: (acc: U, value: T, index: number, array: T[]) => Promise<U>, initialValue: U): Promise<U>
         take(n: number): T[]
-        takeWhile(pred: _Mapper<T, boolean>): T[]
-        takeWhileP(pred: _Mapper<T, Promise<boolean>>): Promise<T[]>
+        takeWhile(pred: _CallbackFn<T, boolean>): T[]
+        takeWhileP(pred: _CallbackFn<T, Promise<boolean>>): Promise<T[]>
         drop(n: number): T[]
-        dropWhile(pred: _Mapper<T, boolean>): T[]
-        dropWhileP(pred: _Mapper<T, Promise<boolean>>): Promise<T[]>
-        everyP(pred: _Mapper<T, Promise<boolean>>): Promise<boolean>
-        someP(pred: _Mapper<T, Promise<boolean>>): Promise<boolean>
+        dropWhile(pred: _CallbackFn<T, boolean>): T[]
+        dropWhileP(pred: _CallbackFn<T, Promise<boolean>>): Promise<T[]>
+        everyP(pred: _CallbackFn<T, Promise<boolean>>): Promise<boolean>
+        someP(pred: _CallbackFn<T, Promise<boolean>>): Promise<boolean>
         zip<U>(values: Iterable<U>): [T, U][]
         zipWith<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => V): V[]
         zipWithP<U, V>(b: Iterable<U>, zipper: (a: T, b: U, index: number) => Promise<V>): Promise<V[]>

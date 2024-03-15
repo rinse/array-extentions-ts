@@ -1,4 +1,4 @@
-export type _Mapper<T, R> = (value: T, index: number, array: T[]) => R;
+export type _CallbackFn<T, R> = (value: T, index: number, array: T[]) => R;
 
 export function head<T>(values: T[]): [T, T[]] | undefined {
     const ret = [...values];
@@ -48,7 +48,7 @@ function eniterable<T>(iterator: Iterator<T>) {
     };
 }
 
-export async function filterP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<T[]> {
+export async function filterP<T>(values: T[], pred: _CallbackFn<T, Promise<boolean>>): Promise<T[]> {
     const ret: T[] = [];
     await mapP_(values, async (value, index, array) => {
         if (await pred(value, index, array)) {
@@ -58,14 +58,14 @@ export async function filterP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>
     return ret;
 }
 
-export function filterMap<T, U>(values: T[], mapper: _Mapper<T, U | undefined>): U[] {
+export function filterMap<T, U>(values: T[], mapper: _CallbackFn<T, U | undefined>): U[] {
     return values.flatMap((value, index, array) => {
         const mapped = mapper(value, index, array);
         return mapped !== undefined ? [mapped] : [];
     });
 }
 
-export async function filterMapP<T, U>(values: T[], mapper: _Mapper<T, Promise<U | undefined>>): Promise<U[]> {
+export async function filterMapP<T, U>(values: T[], mapper: _CallbackFn<T, Promise<U | undefined>>): Promise<U[]> {
     return filterNotUndefined(await mapP(values, mapper));
 }
 
@@ -81,14 +81,14 @@ export function filterNotNullNorUndefined<T>(values: (T | undefined | null)[]): 
     return filterNotUndefined(filterNotNull(values));
 }
 
-export async function findP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<T | undefined> {
+export async function findP<T>(values: T[], pred: _CallbackFn<T, Promise<boolean>>): Promise<T | undefined> {
     const i = await findIndexP(values, pred);
     if (i !== -1) {
         return values[i];
     }
 }
 
-export async function findIndexP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<number> {
+export async function findIndexP<T>(values: T[], pred: _CallbackFn<T, Promise<boolean>>): Promise<number> {
     for (let i = 0; i < values.length; ++i) {
         const value = values[i];
         if (await pred(value, i, values)) {
@@ -98,14 +98,14 @@ export async function findIndexP<T>(values: T[], pred: _Mapper<T, Promise<boolea
     return -1;
 }
 
-export async function findLastP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<T | undefined> {
+export async function findLastP<T>(values: T[], pred: _CallbackFn<T, Promise<boolean>>): Promise<T | undefined> {
     const i = await findLastIndexP(values, pred);
     if (i !== -1) {
         return values[i];
     }
 }
 
-export async function findLastIndexP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<number> {
+export async function findLastIndexP<T>(values: T[], pred: _CallbackFn<T, Promise<boolean>>): Promise<number> {
     for (let i = values.length - 1; 0 <= i; --i) {
         const value = values[i];
         if (await pred(value, i, values)) {
@@ -115,16 +115,16 @@ export async function findLastIndexP<T>(values: T[], pred: _Mapper<T, Promise<bo
     return -1;
 }
 
-export async function flatMapP<T, U>(values: T[], mapper: _Mapper<T, Promise<U[]>>): Promise<U[]> {
+export async function flatMapP<T, U>(values: T[], mapper: _CallbackFn<T, Promise<U[]>>): Promise<U[]> {
     const a = await mapP(values, mapper);
     return a.flat();
 }
 
-export async function forEachP<T>(values: T[], proc: _Mapper<T, Promise<void>>): Promise<void> {
+export async function forEachP<T>(values: T[], proc: _CallbackFn<T, Promise<void>>): Promise<void> {
     return mapP_(values, proc);
 }
 
-export function groupBy<T, K>(values: T[], keySelector: _Mapper<T, K>): Map<K, T[]> {
+export function groupBy<T, K>(values: T[], keySelector: _CallbackFn<T, K>): Map<K, T[]> {
     const ret = new Map<K, T[]>();
     for (let i = 0; i < values.length; ++i) {
         const value = values[i];
@@ -139,11 +139,11 @@ export function groupBy<T, K>(values: T[], keySelector: _Mapper<T, K>): Map<K, T
     return ret;
 }
 
-export async function mapP<T, U>(values: T[], mapper: _Mapper<T, Promise<U>>): Promise<U[]> {
+export async function mapP<T, U>(values: T[], mapper: _CallbackFn<T, Promise<U>>): Promise<U[]> {
     return Promise.all(values.map(mapper));
 }
 
-export async function mapP_<T>(values: T[], mapper: _Mapper<T, Promise<void>>): Promise<void> {
+export async function mapP_<T>(values: T[], mapper: _CallbackFn<T, Promise<void>>): Promise<void> {
     await mapP(values, mapper);
 }
 
@@ -196,7 +196,7 @@ export function take<T>(values: T[], n: number): T[] {
     return takeWhile(values, () => i++ < n);
 }
 
-export function takeWhile<T>(values: T[], pred: _Mapper<T, boolean>): T[] {
+export function takeWhile<T>(values: T[], pred: _CallbackFn<T, boolean>): T[] {
     const ret: T[] = [];
     for (let i = 0; i < values.length; ++i) {
         const value = values[i];
@@ -208,7 +208,7 @@ export function takeWhile<T>(values: T[], pred: _Mapper<T, boolean>): T[] {
     return ret;
 }
 
-export async function takeWhileP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<T[]> {
+export async function takeWhileP<T>(values: T[], pred: _CallbackFn<T, Promise<boolean>>): Promise<T[]> {
     const ret: T[] = [];
     for (let i = 0; i < values.length; ++i) {
         const value = values[i];
@@ -233,7 +233,7 @@ export function drop<T>(values: T[], n: number): T[] {
     return dropWhile(values, () => 0 < i--);
 }
 
-export function dropWhile<T>(values: T[], pred: _Mapper<T, boolean>): T[] {
+export function dropWhile<T>(values: T[], pred: _CallbackFn<T, boolean>): T[] {
     const ret = [];
     let dropping = true;
     for (let i = 0; i < values.length; ++i) {
@@ -247,7 +247,7 @@ export function dropWhile<T>(values: T[], pred: _Mapper<T, boolean>): T[] {
     return ret;
 }
 
-export async function dropWhileP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<T[]> {
+export async function dropWhileP<T>(values: T[], pred: _CallbackFn<T, Promise<boolean>>): Promise<T[]> {
     const ret = [];
     let dropping = true;
     for (let i = 0; i < values.length; ++i) {
@@ -261,12 +261,12 @@ export async function dropWhileP<T>(values: T[], pred: _Mapper<T, Promise<boolea
     return ret;
 }
 
-export async function everyP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<boolean> {
+export async function everyP<T>(values: T[], pred: _CallbackFn<T, Promise<boolean>>): Promise<boolean> {
     const results = await mapP(values, pred);
     return results.every(identity);
 }
 
-export async function someP<T>(values: T[], pred: _Mapper<T, Promise<boolean>>): Promise<boolean> {
+export async function someP<T>(values: T[], pred: _CallbackFn<T, Promise<boolean>>): Promise<boolean> {
     const results = await mapP(values, pred);
     return results.some(identity);
 }
