@@ -90,17 +90,17 @@ describe("filterP", () => {
         });
         expect(actual).toEqual([2, 4, 6, 8, 10]);
     });
-    test("process elements asynchronously", async () => {
+    test("process elements concurrently", async () => {
         const start = performance.now();
         await filterP([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], async e => {
-            await sleep(100);
+            await sleep(10);
             return e % 2 === 0;
         });
         const end = performance.now();
-        const actual = end - start;
-        // Expects 90 <= actual <= 110
-        expect(actual).toBeGreaterThanOrEqual(90);
-        expect(actual).toBeLessThanOrEqual(110);
+        const actual = Math.trunc(end - start);
+        // Expects 9 <= actual <= 11
+        expect(actual).toBeGreaterThanOrEqual(9);
+        expect(actual).toBeLessThanOrEqual(11);
     });
 });
 
@@ -152,6 +152,20 @@ describe("filterMapP", () => {
             repeat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10)
         );
     });
+    test("process elements concurrently", async () => {
+        const start = performance.now();
+        await filterMapP([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], async e => {
+            await sleep(10);
+            if (e % 2 === 0) {
+                return e * 2;
+            }
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 9 <= actual <= 11
+        expect(actual).toBeGreaterThanOrEqual(9);
+        expect(actual).toBeLessThanOrEqual(11);
+    });
 });
 
 describe("filterNotNull", () => {
@@ -188,12 +202,36 @@ describe("findP", () => {
         const actual = await findP(["Hello", "Beautiful", "World"], async s => s.length === 5);
         expect(actual).toEqual("Hello");
     });
+    test("process elements non-concurrently", async () => {
+        const start = performance.now();
+        await findP(["Hello", "Beautiful", "World"], async s => {
+            await sleep(10);
+            return s.length === 9;
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 19 <= actual <= 21
+        expect(actual).toBeGreaterThanOrEqual(19);
+        expect(actual).toBeLessThanOrEqual(21);
+    });
 });
 
 describe("findIndexP", () => {
     test("normal case", async () => {
         const actual = await findIndexP(["Hello", "Beautiful", "World"], async s => s.length === 5);
         expect(actual).toBe(0);
+    });
+    test("process elements non-concurrently", async () => {
+        const start = performance.now();
+        await findIndexP(["Hello", "Beautiful", "World"], async s => {
+            await sleep(10);
+            return s.length === 9;
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 19 <= actual <= 21
+        expect(actual).toBeGreaterThanOrEqual(19);
+        expect(actual).toBeLessThanOrEqual(21);
     });
 });
 
@@ -202,6 +240,18 @@ describe("findLastP", () => {
         const actual = await findLastP(["Hello", "Beautiful", "World"], async s => s.length === 5);
         expect(actual).toEqual("World");
     });
+    test("process elements non-concurrently", async () => {
+        const start = performance.now();
+        await findLastP(["Hello", "Beautiful", "World"], async s => {
+            await sleep(10);
+            return s.length === 9;
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 19 <= actual <= 21
+        expect(actual).toBeGreaterThanOrEqual(19);
+        expect(actual).toBeLessThanOrEqual(21);
+    });
 });
 
 describe("findLastIndexP", () => {
@@ -209,12 +259,36 @@ describe("findLastIndexP", () => {
         const actual = await findLastIndexP(["Hello", "Beautiful", "World"], async s => s.length === 5);
         expect(actual).toBe(2);
     });
+    test("process elements non-concurrently", async () => {
+        const start = performance.now();
+        await findLastIndexP(["Hello", "Beautiful", "World"], async s => {
+            await sleep(10);
+            return s.length === 9;
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 19 <= actual <= 21
+        expect(actual).toBeGreaterThanOrEqual(19);
+        expect(actual).toBeLessThanOrEqual(21);
+    });
 });
 
 describe("flatMapP", () => {
     test("normal case", async () => {
         const actual: Array<number> = await flatMapP([1, 2, 3], async n => [n, -n]);
         expect(actual).toEqual([1, -1, 2, -2, 3, -3]);
+    });
+    test("process elements concurrently", async () => {
+        const start = performance.now();
+        await flatMapP([1, 2, 3], async n => {
+            await sleep(10);
+            return [n, -n];
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 9 <= actual <= 11
+        expect(actual).toBeGreaterThanOrEqual(9);
+        expect(actual).toBeLessThanOrEqual(11);
     });
 });
 
@@ -225,6 +299,17 @@ describe("forEachP is the same to mapP_", () => {
             fn();
         });
         expect(fn).toHaveBeenCalledTimes(10);
+    });
+    test("process elements concurrently", async () => {
+        const start = performance.now();
+        await forEachP([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], async n => {
+            await sleep(10);
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 9 <= actual <= 11
+        expect(actual).toBeGreaterThanOrEqual(9);
+        expect(actual).toBeLessThanOrEqual(11);
     });
 });
 
@@ -252,6 +337,18 @@ describe("groupByP", () => {
                 ["odd", [1, 3, 5, 7, 9]],
             ]));
     });
+    test("process elements concurrently", async () => {
+        const start = performance.now();
+        await groupByP([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], async value => {
+            await sleep(10);
+            return value % 2 === 0 ? "even" : "odd";
+        })
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 9 <= actual <= 11
+        expect(actual).toBeGreaterThanOrEqual(9);
+        expect(actual).toBeLessThanOrEqual(11);
+    });
 });
 
 describe("mapP", () => {
@@ -275,6 +372,18 @@ describe("mapP", () => {
         expect(actual).toEqual(
             repeat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10)
         );
+    });
+    test("process elements concurrently", async () => {
+        const start = performance.now();
+        await mapP([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], async value => {
+            await sleep(10);
+            return value % 2 === 0 ? "even" : "odd";
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 9 <= actual <= 11
+        expect(actual).toBeGreaterThanOrEqual(9);
+        expect(actual).toBeLessThanOrEqual(11);
     });
 });
 
@@ -302,6 +411,17 @@ describe("mapP_", () => {
             repeat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10)
         );
     });
+    test("process elements concurrently", async () => {
+        const start = performance.now();
+        await mapP_([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], async value => {
+            await sleep(10);
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 9 <= actual <= 11
+        expect(actual).toBeGreaterThanOrEqual(9);
+        expect(actual).toBeLessThanOrEqual(11);
+    });
 });
 
 describe("permutations", () => {
@@ -321,6 +441,20 @@ describe("reduceP", () => {
         const expected = input.reduce((acc, e) => acc.concat(e), init);
         expect(actual).toEqual(expected);
     });
+    test("process elements non-concurrently", async () => {
+        const start = performance.now();
+        const input = [[0, 1], [2, 3], [4, 5]];
+        const init = [6, 7];
+        await reduceP(input, async (acc, e) => {
+            await sleep(10);
+            return acc.concat(e);
+        }, init);
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 29 <= actual <= 31
+        expect(actual).toBeGreaterThanOrEqual(29);
+        expect(actual).toBeLessThanOrEqual(31);
+    });
 });
 
 describe("reduceRightP", () => {
@@ -330,6 +464,20 @@ describe("reduceRightP", () => {
         const actual = await reduceRightP(input, async (acc, e) => acc.concat(e), init);
         const expected = input.reduceRight((acc, e) => acc.concat(e), init);
         expect(actual).toEqual(expected);
+    });
+    test("process elements non-concurrently", async () => {
+        const start = performance.now();
+        const input = [[0, 1], [2, 3], [4, 5]];
+        const init = [6, 7];
+        await reduceRightP(input, async (acc, e) => {
+            await sleep(10);
+            return acc.concat(e);
+        }, init);
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 29 <= actual <= 31
+        expect(actual).toBeGreaterThanOrEqual(29);
+        expect(actual).toBeLessThanOrEqual(31);
     });
 });
 
@@ -378,6 +526,19 @@ describe("takeWhileP", () => {
         const actual = await takeWhileP(input, async n => n < 5);
         expect(actual).toEqual([1, 2, 3, 4]);
     });
+    test("process elements non-concurrently", async () => {
+        const start = performance.now();
+        const input = [1, 2, 1];
+        await takeWhileP(input, async n => {
+            await sleep(10);
+            return n < 5;
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 29 <= actual <= 31
+        expect(actual).toBeGreaterThanOrEqual(29);
+        expect(actual).toBeLessThanOrEqual(31);
+    });
 });
 
 describe("drop", () => {
@@ -417,6 +578,19 @@ describe("dropWhileP", () => {
         const actual = await dropWhileP(input, async n => n < 5);
         expect(actual).toEqual([5, 4, 3, 2, 1]);
     });
+    test("process elements non-concurrently", async () => {
+        const start = performance.now();
+        const input = [1, 2, 1];
+        await takeWhileP(input, async n => {
+            await sleep(10);
+            return n < 5;
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 29 <= actual <= 31
+        expect(actual).toBeGreaterThanOrEqual(29);
+        expect(actual).toBeLessThanOrEqual(31);
+    });
 });
 
 describe("everyP", () => {
@@ -428,6 +602,18 @@ describe("everyP", () => {
         const actual = await everyP([1, 30, 39, 50, 10, 13], async n => n < 50)
         expect(actual).toBe(false);
     });
+    test("process elements concurrently", async () => {
+        const start = performance.now();
+        await everyP([1, 30, 39, 29, 10, 13], async n => {
+            await sleep(10);
+            return n < 50;
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 9 <= actual <= 11
+        expect(actual).toBeGreaterThanOrEqual(9);
+        expect(actual).toBeLessThanOrEqual(11);
+    });
 });
 
 describe("someP", () => {
@@ -438,6 +624,18 @@ describe("someP", () => {
     test("returns false if no values do not satisfy the predicate", async () => {
         const actual = await someP([100, 300, 390, 290, 100, 130], async n => n < 50)
         expect(actual).toBe(false);
+    });
+    test("process elements concurrently", async () => {
+        const start = performance.now();
+        await someP([100, 300, 390, 49, 100, 130], async n => {
+            await sleep(10);
+            return n < 50;
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 9 <= actual <= 11
+        expect(actual).toBeGreaterThanOrEqual(9);
+        expect(actual).toBeLessThanOrEqual(11);
     });
 });
 
@@ -500,6 +698,20 @@ describe("zipWithP", () => {
         const actual = zipWith(input1, input2, (a, b, index) => index);
         expect(actual).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
     });
+    test("process elements concurrently", async () => {
+        const start = performance.now();
+        const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const input2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        await zipWithP(input1, input2, async (a, b) => {
+            await sleep(10);
+            return a + b;
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 9 <= actual <= 11
+        expect(actual).toBeGreaterThanOrEqual(9);
+        expect(actual).toBeLessThanOrEqual(11);
+    });
 });
 
 describe("zipWithP_", () => {
@@ -510,6 +722,19 @@ describe("zipWithP_", () => {
         await zipWithP_(input1, input2, async (a, b) => { actual.push(a + b) });
         actual.sort((a, b) => a - b);
         expect(actual).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18, 20]);
+    });
+    test("process elements concurrently", async () => {
+        const start = performance.now();
+        const input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const input2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        await zipWithP_(input1, input2, async (a, b) => {
+            await sleep(10);
+        });
+        const end = performance.now();
+        const actual = Math.trunc(end - start);
+        // Expects 9 <= actual <= 11
+        expect(actual).toBeGreaterThanOrEqual(9);
+        expect(actual).toBeLessThanOrEqual(11);
     });
 });
 
